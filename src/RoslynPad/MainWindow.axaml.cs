@@ -1,4 +1,4 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Composition.Hosting;
 using System.Globalization;
 using System.Reflection;
@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 #if DEBUG
 using Microsoft.Extensions.Logging;
 #endif
+using RoslynPad.Localization;
 using RoslynPad.Themes;
 using RoslynPad.UI;
 using SourceCodeKind = Microsoft.CodeAnalysis.SourceCodeKind;
@@ -62,9 +63,13 @@ internal partial class MainWindow : Window
         DataContext = ViewModel;
 
         InitializeComponent();
+        LocalizationManager.Localize(NativeMenu.GetMenu(this));
+        LocalizationManager.LanguageChanged += OnLanguageChanged;
+        Closed += OnClosed;
         InitializeKeyBindings();
         LoadWindowLayout();
         LoadDockLayout();
+        ApplyLocalizedDockTitles();
 
         ResultPane.GetObservable(global::Dock.Model.Avalonia.Core.DockBase.ActiveDockableProperty)
             .Subscribe(_ => SetShowIL());
@@ -84,11 +89,54 @@ internal partial class MainWindow : Window
         this.AddKeyBinding(KeyBindingCommands.ToggleOptimization, ViewModel.ToggleOptimizationCommand);
     }
 
+    private void OnClosed(object? sender, EventArgs e) =>
+        LocalizationManager.LanguageChanged -= OnLanguageChanged;
+
+    private void OnLanguageChanged()
+    {
+        LocalizationManager.Localize(NativeMenu.GetMenu(this));
+        ViewModel.RefreshLocalization();
+        ApplyLocalizedDockTitles();
+    }
+
+    /// <summary>
+    /// Dock persists tab and pane titles in the saved layout, so translated titles have to be
+    /// pushed onto the live dockables after a layout restore and after a language change.
+    /// </summary>
+    private void ApplyLocalizedDockTitles()
+    {
+        if (Dock.Layout is not RootDock layout || Dock.Factory is not { } factory)
+        {
+            return;
+        }
+
+        SetPaneTitle("Documents", "Pane_Documents");
+        SetPaneTitle("Results", "Pane_Results");
+        SetPaneTitle("Build", "Pane_Output");
+        SetPaneTitle("IL", "Pane_IL");
+
+        foreach (var content in ViewModel.OpenDocuments)
+        {
+            if (FindDockable(factory, layout, content.Id) is { } dockable)
+            {
+                dockable.Title = content.Title;
+            }
+        }
+
+        void SetPaneTitle(string id, string key)
+        {
+            if (FindDockable(factory, layout, id) is { } dockable)
+            {
+                dockable.Title = LocalizationManager.Get(key);
+            }
+        }
+    }
+
     private void OnErrorButtonClick(object sender, RoutedEventArgs e)
     {
         new Window
         {
-            Title = "Error Details",
+            Title = LocalizationManager.Get("Main_ErrorDetailsTitle"),
             Width = 600,
             Height = 400,
             Content = new TextBox
@@ -135,15 +183,14 @@ internal partial class MainWindow : Window
             return;
         }
 
-        if (!ViewModel.UseSystemTheme)
-        {
-            app.RequestedThemeVariant = ViewModel.ThemeType switch
+        app.RequestedThemeVariant = ViewModel.UseSystemTheme
+            ? ThemeVariant.Default
+            : ViewModel.ThemeType switch
             {
                 ThemeType.Light => ThemeVariant.Light,
                 ThemeType.Dark => ThemeVariant.Dark,
-                _ => null
+                _ => ThemeVariant.Default
             };
-        }
 
         if (_themeDictionary is not null)
         {

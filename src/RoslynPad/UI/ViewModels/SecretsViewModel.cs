@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using RoslynPad.Localization;
 using RoslynPad.Runtime;
 using RoslynPad.Utilities;
 
@@ -28,9 +29,11 @@ public class SecretsViewModel : NotificationObject, IDocumentContent
 
     public string Id => "secrets";
 
-    public string Title => "Secrets";
+    public string Title => LocalizationManager.Get("Tab_Secrets");
 
     public bool IsDirty => false;
+
+    public bool HasSecrets => Secrets.Count > 0;
 
     public string Directory { get; }
 
@@ -71,7 +74,12 @@ public class SecretsViewModel : NotificationObject, IDocumentContent
         {
             ReportError(ex);
         }
+
+        OnPropertyChanged(nameof(HasSecrets));
     }
+
+    /// <summary>Re-reads the localized tab title after the UI language changed.</summary>
+    public void RefreshLocalization() => OnPropertyChanged(nameof(Title));
 
     private void ReportError(Exception ex)
     {
@@ -94,6 +102,7 @@ public class SecretsViewModel : NotificationObject, IDocumentContent
 
         var item = new SecretItemViewModel(_secretManager, ReportError) { IsEditing = true };
         Secrets.Insert(0, item);
+        OnPropertyChanged(nameof(HasSecrets));
     }
 
     private void SaveNewSecret(SecretItemViewModel? item)
@@ -125,6 +134,7 @@ public class SecretsViewModel : NotificationObject, IDocumentContent
         if (item is not null)
         {
             Secrets.Remove(item);
+            OnPropertyChanged(nameof(HasSecrets));
         }
     }
 

@@ -12,7 +12,7 @@
   <Grid RowDefinitions="Auto,Auto,*">
 
     <Border Grid.Row="0"
-            Padding="6 4"
+            Padding="6 3"
             BorderThickness="0 0 0 1"
             BorderBrush="{DynamicResource {x:Static roslynPad:ThemeDictionary.PanelBorder}}">
       <StackPanel Orientation="Horizontal"
@@ -20,39 +20,46 @@
         <Button Classes="tool"
                 Command="{Binding NewDocumentCommand, Mode=OneTime}"
                 CommandParameter="{x:Static roslyn:SourceCodeKind.Regular}"
-                ToolTip.Tip="{OnPlatform New File-Based App (Ctrl+N), macOS=New File-Based App (⌘ N)}">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_NewFileApp}"
+                ToolTip.Tip="{OnPlatform Default={DynamicResource L_Tooltip_NewFileApp}, macOS={DynamicResource L_Tooltip_NewFileAppMac}}">
           <Image Source="{StaticResource CsFile}" />
         </Button>
         <Button Classes="tool"
                 Command="{Binding NewDocumentCommand, Mode=OneTime}"
                 CommandParameter="{x:Static roslyn:SourceCodeKind.Script}"
-                ToolTip.Tip="{OnPlatform New Script (Ctrl+Shift+N), macOS=New Script (⌘ ⇧ N)}">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_NewScript}"
+                ToolTip.Tip="{OnPlatform Default={DynamicResource L_Tooltip_NewScript}, macOS={DynamicResource L_Tooltip_NewScriptMac}}">
           <Image Source="{StaticResource Script}" />
         </Button>
         <Button Classes="tool"
                 Command="{Binding OpenFileCommand, Mode=OneTime}"
-                ToolTip.Tip="{OnPlatform Open File (Ctrl+O), macOS=Open File (⌘ O)}">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_OpenFile}"
+                ToolTip.Tip="{OnPlatform Default={DynamicResource L_Tooltip_OpenFile}, macOS={DynamicResource L_Tooltip_OpenFileMac}}">
           <Image Source="{StaticResource OpenFolder}" />
         </Button>
         <Button Classes="tool"
                 Command="{Binding EditUserDocumentPathCommand, Mode=OneTime}"
-                ToolTip.Tip="Change Documents Location">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_ChangeDocumentsLocation}"
+                ToolTip.Tip="{DynamicResource L_Tooltip_ChangeDocumentsLocation}">
           <Image Source="{DynamicResource MoveFolder}" />
         </Button>
         <Separator Classes="toolbar" />
         <Button Classes="tool"
                 Command="{Binding ClearRestoreCacheCommand, Mode=OneTime}"
-                ToolTip.Tip="Clear Restore Cache">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_ClearRestoreCache}"
+                ToolTip.Tip="{DynamicResource L_Tooltip_ClearRestoreCache}">
           <Image Source="{DynamicResource ClearContent}" />
         </Button>
         <Button Classes="tool"
                 Command="{Binding OpenSettingsCommand, Mode=OneTime}"
-                ToolTip.Tip="Settings">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_Settings}"
+                ToolTip.Tip="{DynamicResource L_Tooltip_Settings}">
           <Image Source="{DynamicResource Settings}" />
         </Button>
         <Button Classes="tool"
                 Command="{Binding OpenSecretsCommand, Mode=OneTime}"
-                ToolTip.Tip="Secrets">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_Secrets}"
+                ToolTip.Tip="{DynamicResource L_Tooltip_Secrets}">
           <Image Source="{DynamicResource Secrets}" />
         </Button>
       </StackPanel>
@@ -60,12 +67,13 @@
 
     <TextBox Grid.Row="1"
              Name="SearchText"
+             Classes="field"
              Margin="6 6 6 4"
-             MinHeight="26"
+             MinHeight="28"
              FontSize="13"
              Padding="8 3"
              VerticalContentAlignment="Center"
-             PlaceholderText="Search documents"
+             PlaceholderText="{DynamicResource L_Tree_SearchPlaceholder}"
              Text="{Binding SearchText}">
       <TextBox.KeyBindings>
         <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
@@ -80,7 +88,8 @@
                   Width="20"
                   Height="20"
                   Command="{Binding ClearSearchCommand}"
-                  ToolTip.Tip="Clear search (Esc)"
+                  AutomationProperties.Name="{DynamicResource L_Tooltip_ClearSearch}"
+                  ToolTip.Tip="{DynamicResource L_Tooltip_ClearSearch}"
                   IsVisible="{Binding CanClearSearch}">
             <Image Source="{StaticResource Close}"
                    Width="12"
@@ -90,7 +99,8 @@
                         Width="20"
                         Height="20"
                         IsChecked="{Binding SearchFileContents}"
-                        ToolTip.Tip="Search File Contents">
+                        AutomationProperties.Name="{DynamicResource L_Tooltip_SearchFileContents}"
+                        ToolTip.Tip="{DynamicResource L_Tooltip_SearchFileContents}">
             <Image Source="{StaticResource FileCollection}"
                    Width="14"
                    Height="14" />
@@ -99,7 +109,8 @@
                         Width="20"
                         Height="20"
                         IsChecked="{Binding SearchUsingRegex}"
-                        ToolTip.Tip="Use Regular Expressions">
+                        AutomationProperties.Name="{DynamicResource L_Tooltip_UseRegex}"
+                        ToolTip.Tip="{DynamicResource L_Tooltip_UseRegex}">
             <Image Source="{StaticResource RegularExpression}"
                    Width="14"
                    Height="14" />
@@ -119,11 +130,11 @@
           <Setter Property="ContextMenu">
             <Setter.Value>
               <ContextMenu>
-                <MenuItem Header="{OnPlatform _Open in File Explorer, macOS=_Open in Finder}"
+                <MenuItem Header="{OnPlatform Default={DynamicResource L_Tree_OpenInExplorer}, macOS={DynamicResource L_Tree_OpenInFinder}}"
                           Click="DocumentsContextMenu_OpenFolder_Click" />
-                <MenuItem Header="_Rename..."
+                <MenuItem Header="{DynamicResource L_Tree_Rename}"
                           Click="DocumentsContextMenu_Rename_Click" />
-                <MenuItem Header="_Save As..."
+                <MenuItem Header="{DynamicResource L_Tree_SaveAs}"
                           Click="DocumentsContextMenu_SaveAs_Click" />
               </ContextMenu>
             </Setter.Value>
@@ -144,6 +155,8 @@
                    Height="16"
                    IsVisible="{Binding !IsFolder}" />
             <TextBlock Text="{Binding Name}"
+                       FontSize="13"
+                       TextTrimming="CharacterEllipsis"
                        VerticalAlignment="Center" />
           </StackPanel>
         </TreeDataTemplate>

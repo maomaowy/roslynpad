@@ -3,35 +3,41 @@
              xmlns:local="clr-namespace:RoslynPad;assembly=RoslynPad"
              x:Class="RoslynPad.SaveDocumentDialog"
              x:DataType="local:SaveDocumentDialog"
-             MinWidth="300">
-    <StackPanel Margin="10">
-        <TextBlock Text="Save Document"
-                   Classes="Title" />
+             MinWidth="360">
+    <StackPanel Margin="16">
+        <TextBlock Text="{Binding Title}"
+                   Classes="dialogTitle" />
+        <TextBlock Text="{DynamicResource L_Dialog_DocumentName}"
+                   Classes="fieldLabel" />
         <TextBox Name="DocumentTextBox"
+                 Classes="field"
                  KeyDown="DocumentText_KeyDown"
                  Text="{Binding DocumentName}"
                  IsEnabled="{Binding AllowNameEdit}"
-                 MaxLength="200"
-                 Margin="0,10,0,0" />
+                 MaxLength="200" />
         <StackPanel HorizontalAlignment="Right"
                     Orientation="Horizontal"
-                    Margin="50,30,0,0">
+                    Spacing="8"
+                    Margin="0,20,0,0">
             <Button Name="OverwriteButton"
-                    BorderBrush="Red"
+                    Classes="danger"
                     IsVisible="false"
-                    Content="_Overwrite"
+                    Content="{DynamicResource L_Dialog_OverwriteButton}"
                     Click="Overwrite_Click"/>
-            <Button IsDefault="True"
-                    Name="SaveButton"
-                    Content="_Save"
-                    Click="Save_Click" />
-            <Button Content="_Don't Save"
+            <Button Classes="secondary"
+                    Content="{DynamicResource L_Dialog_DontSaveButton}"
                     IsVisible="{Binding ShowDoNotSave}"
                     Name="DontSaveButton"
                     Click="DoNotSave_Click" />
-            <Button Content="_Cancel"
+            <Button Classes="secondary"
+                    Content="{DynamicResource L_Dialog_CancelButton}"
                     IsCancel="True"
                     Click="Cancel_Click" />
+            <Button Classes="primary"
+                    IsDefault="True"
+                    Name="SaveButton"
+                    Content="{DynamicResource L_Dialog_SaveButton}"
+                    Click="Save_Click" />
         </StackPanel>
     </StackPanel>
 </UserControl>

@@ -11,13 +11,15 @@
              x:DataType="ui:SettingsViewModel">
     <UserControl.Styles>
         <Style Selector="TextBlock.SettingName">
+            <Setter Property="FontSize" Value="13" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         </Style>
         <Style Selector="TextBlock.Description">
-            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static local:ThemeDictionary.DescriptionForeground}}" />
             <Setter Property="FontSize" Value="11" />
-            <Setter Property="Margin" Value="0,5,0,0" />
+            <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
     </UserControl.Styles>
@@ -28,72 +30,57 @@
         </Grid.RowDefinitions>
 
         <!-- Filter TextBox -->
-        <Border Grid.Row="0"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                Margin="10,10,10,5">
-            <Grid>
-                <TextBox x:Name="FilterTextBox"
-                         Text="{Binding FilterText}"
-                         BorderThickness="0"
-                         Padding="5" />
-                <TextBlock Text="Filter settings..."
-                           IsHitTestVisible="False"
-                           Foreground="Gray"
-                           Padding="7,5,5,5"
-                           VerticalAlignment="Center"
-                           IsVisible="{Binding FilterText, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
-            </Grid>
-        </Border>
+        <TextBox x:Name="FilterTextBox"
+                 Grid.Row="0"
+                 Classes="field"
+                 Text="{Binding FilterText}"
+                 PlaceholderText="{DynamicResource L_Settings_FilterPlaceholder}"
+                 Margin="10,10,10,5" />
 
         <!-- Settings List -->
-        <ScrollViewer Grid.Row="1"
-                      Margin="10,5,10,10">
-            <ItemsControl ItemsSource="{Binding FilteredSettings}">
+        <Panel Grid.Row="1">
+            <ScrollViewer Margin="12,4,12,12">
+                <ItemsControl ItemsSource="{Binding FilteredSettings}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type ui:SettingItem}">
-                        <Border BorderBrush="Gray"
+                        <Border BorderBrush="{DynamicResource {x:Static local:ThemeDictionary.PanelBorder}}"
                                 BorderThickness="0,0,0,1"
-                                Padding="5,10">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
-                                <!-- Setting Name -->
-                                <TextBlock Grid.Row="0"
-                                           Grid.Column="0"
-                                           Text="{Binding DisplayName}"
-                                           Classes="SettingName" />
-
-                                <!-- Setting Editor -->
-                                <ContentControl Grid.Row="0"
-                                                Grid.Column="1"
+                                Padding="8,10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel Grid.Column="0"
+                                            VerticalAlignment="Center">
+                                    <!-- Setting Name -->
+                                    <TextBlock Text="{Binding DisplayName}"
+                                               Classes="SettingName" />
+                                    <!-- Description -->
+                                    <TextBlock Text="{Binding Description}"
+                                               Classes="Description"
+                                               IsVisible="{Binding Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                </StackPanel>
+                                <ContentControl Grid.Column="1"
                                                 Content="{Binding}"
                                                 HorizontalAlignment="Right"
-                                                Margin="10,0,0,0">
+                                                VerticalAlignment="Center"
+                                                Margin="16,0,0,0">
                                     <ContentControl.ContentTemplate>
                                         <local:SettingEditorTemplate />
                                     </ContentControl.ContentTemplate>
                                 </ContentControl>
-
-                                <!-- Description -->
-                                <TextBlock Grid.Row="1"
-                                           Grid.Column="0"
-                                           Grid.ColumnSpan="2"
-                                           Text="{Binding Description}"
-                                           Classes="Description"
-                                           IsVisible="{Binding Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                             </Grid>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
+
+        <TextBlock Classes="emptyState"
+                   Text="{DynamicResource L_Settings_NoMatches}"
+                   IsVisible="{Binding !HasFilteredSettings}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   TextWrapping="Wrap"
+                   MaxWidth="360"
+                   IsHitTestVisible="False" />
+    </Panel>
     </Grid>
 </UserControl>

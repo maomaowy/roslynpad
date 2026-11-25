@@ -13,48 +13,48 @@
         Name="This">
   <NativeMenu.Menu>
     <NativeMenu>
-      <NativeMenuItem Header="File">
+      <NativeMenuItem Header="L_Menu_File">
         <NativeMenu>
-          <NativeMenuItem Header="New File-Based App" Gesture="Meta+N"
+          <NativeMenuItem Header="L_Menu_NewFileApp" Gesture="Meta+N"
                           Click="OnNewDocumentClick" />
-          <NativeMenuItem Header="New Script (Legacy)" Gesture="Meta+Shift+N"
+          <NativeMenuItem Header="L_Menu_NewScript" Gesture="Meta+Shift+N"
                           Click="OnNewScriptClick" />
           <NativeMenuItemSeparator />
-          <NativeMenuItem Header="Open..." Gesture="Meta+O"
+          <NativeMenuItem Header="L_Menu_Open" Gesture="Meta+O"
                           Command="{Binding OpenFileCommand}" />
           <NativeMenuItemSeparator />
-          <NativeMenuItem Header="Save" Gesture="Meta+S"
+          <NativeMenuItem Header="L_Menu_Save" Gesture="Meta+S"
                           Click="OnSaveClick" />
-          <NativeMenuItem Header="Close" Gesture="Meta+W"
+          <NativeMenuItem Header="L_Menu_Close" Gesture="Meta+W"
                           Command="{Binding CloseCurrentDocumentCommand}" />
         </NativeMenu>
       </NativeMenuItem>
-      <NativeMenuItem Header="Edit">
+      <NativeMenuItem Header="L_Menu_Edit">
         <NativeMenu>
-          <NativeMenuItem Header="Find" Gesture="Meta+F"
+          <NativeMenuItem Header="L_Menu_Find" Gesture="Meta+F"
                           Click="OnFindClick" />
-          <NativeMenuItem Header="Replace" Gesture="Meta+Alt+F"
+          <NativeMenuItem Header="L_Menu_Replace" Gesture="Meta+Alt+F"
                           Click="OnReplaceClick" />
           <NativeMenuItemSeparator />
-          <NativeMenuItem Header="Format Document" Gesture="Meta+D"
+          <NativeMenuItem Header="L_Menu_FormatDocument" Gesture="Meta+D"
                           Click="OnFormatDocumentClick" />
-          <NativeMenuItem Header="Comment Selection" Gesture="Meta+K"
+          <NativeMenuItem Header="L_Menu_CommentSelection" Gesture="Meta+K"
                           Click="OnCommentSelectionClick" />
-          <NativeMenuItem Header="Uncomment Selection" Gesture="Meta+U"
+          <NativeMenuItem Header="L_Menu_UncommentSelection" Gesture="Meta+U"
                           Click="OnUncommentSelectionClick" />
           <NativeMenuItemSeparator />
-          <NativeMenuItem Header="Rename Symbol" Gesture="F2"
+          <NativeMenuItem Header="L_Menu_RenameSymbol" Gesture="F2"
                           Click="OnRenameSymbolClick" />
         </NativeMenu>
       </NativeMenuItem>
-      <NativeMenuItem Header="Run">
+      <NativeMenuItem Header="L_Menu_Run">
         <NativeMenu>
-          <NativeMenuItem Header="Run" Gesture="F5"
+          <NativeMenuItem Header="L_Menu_Run" Gesture="F5"
                           Click="OnRunClick" />
-          <NativeMenuItem Header="Terminate" Gesture="Shift+F5"
+          <NativeMenuItem Header="L_Menu_Terminate" Gesture="Shift+F5"
                           Click="OnTerminateClick" />
           <NativeMenuItemSeparator />
-          <NativeMenuItem Header="Toggle Live Mode"
+          <NativeMenuItem Header="L_Menu_ToggleLiveMode"
                           Click="OnToggleLiveModeClick" />
         </NativeMenu>
       </NativeMenuItem>
@@ -71,7 +71,7 @@
 
       <Button Name="ErrorBar"
               DockPanel.Dock="Bottom"
-              Padding="10 4"
+              Padding="10 6"
               CornerRadius="0"
               BorderThickness="0"
               HorizontalAlignment="Stretch"
@@ -79,7 +79,7 @@
               Background="{DynamicResource {x:Static local:ThemeDictionary.StatusBarItemErrorBackground}}"
               Foreground="{DynamicResource {x:Static local:ThemeDictionary.StatusBarItemErrorForeground}}"
               Click="OnErrorButtonClick"
-              ToolTip.Tip="Show error details"
+              ToolTip.Tip="{DynamicResource L_Status_ShowErrorDetails}"
               IsVisible="{Binding HasError}">
         <Button.Styles>
           <Style Selector="Button#ErrorBar:pointerover /template/ ContentPresenter#PART_ContentPresenter">
@@ -104,7 +104,8 @@
       </Button>
 
       <Border DockPanel.Dock="Bottom"
-              Padding="10 2"
+              Padding="10 3"
+              MinHeight="24"
               Background="{DynamicResource {x:Static local:ThemeDictionary.StatusBarBackground}}"
               BorderBrush="{DynamicResource {x:Static local:ThemeDictionary.PanelBorder}}"
               BorderThickness="0 1 0 0">
@@ -114,7 +115,8 @@
                      VerticalAlignment="Center"
                      FontSize="12"
                      Foreground="{DynamicResource {x:Static local:ThemeDictionary.StatusBarForeground}}"
-                     IsVisible="{Binding CurrentOpenDocument, Converter={x:Static ObjectConverters.IsNotNull}}"><Run Text="Ln " /><Run Text="{Binding CurrentOpenDocument.CurrentLine, Mode=OneWay, FallbackValue=1}" /><Run Text=", Col " /><Run Text="{Binding CurrentOpenDocument.CurrentColumn, Mode=OneWay, FallbackValue=1}" /></TextBlock>
+                     IsVisible="{Binding CurrentOpenDocument, Converter={x:Static ObjectConverters.IsNotNull}}"
+                     Text="{Binding CurrentOpenDocument.CaretPositionText, Mode=OneWay}" />
 
           <StackPanel DockPanel.Dock="Right"
                       Orientation="Horizontal"
@@ -122,11 +124,25 @@
                       VerticalAlignment="Center"
                       TextBlock.Foreground="{DynamicResource {x:Static local:ThemeDictionary.StatusBarForeground}}">
 
+            <StackPanel Orientation="Horizontal"
+                        Spacing="6"
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding CurrentOpenDocument.IsRestoring, FallbackValue=False}">
+              <ProgressBar Width="64"
+                           Height="3"
+                           IsIndeterminate="True"
+                           VerticalAlignment="Center" />
+              <TextBlock Text="{DynamicResource L_Status_Restoring}"
+                         FontSize="12"
+                         VerticalAlignment="Center" />
+            </StackPanel>
+
             <ToggleButton Classes="tool"
                           Width="22"
                           Height="22"
                           IsChecked="{Binding Settings.OptimizeCompilation}"
-                          ToolTip.Tip="{OnPlatform Optimization (Ctrl+Shift+O), macOS=Optimization (⌘ ⇧ O)}">
+                          AutomationProperties.Name="{DynamicResource L_Tooltip_Optimization}"
+                          ToolTip.Tip="{OnPlatform Default={DynamicResource L_Tooltip_Optimization}, macOS={DynamicResource L_Tooltip_OptimizationMac}}">
               <Image Source="{StaticResource Time}"
                      Width="14"
                      Height="14" />
@@ -140,7 +156,8 @@
                      Width="14"
                      VerticalAlignment="Center" />
               <Slider Width="110"
-                      ToolTip.Tip="Editor Font Size"
+                      AutomationProperties.Name="{DynamicResource L_Tooltip_EditorFontSize}"
+                      ToolTip.Tip="{DynamicResource L_Tooltip_EditorFontSize}"
                       VerticalAlignment="Center"
                       Minimum="{x:Static ui:MainViewModel.MinimumFontSize}"
                       Maximum="{x:Static ui:MainViewModel.MaximumFontSize}"
@@ -176,7 +193,7 @@
           <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
 
             <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left">
-              <Tool x:Name="Documents" Id="Documents" Title="Documents" x:DataType="Tool" CanFloat="False" CanPin="True" CanClose="False">
+              <Tool x:Name="Documents" Id="Documents" Title="{DynamicResource L_Pane_Documents}" x:DataType="Tool" CanFloat="False" CanPin="True" CanClose="False">
                 <local:DocumentTreeView x:Name="DocumentTreeView" DataContext="{Binding #This.DataContext}" />
               </Tool>
             </ToolDock>
@@ -193,10 +210,10 @@
                 <!-- A DocumentDock styled as VS Code panel pills: tabs on top, no chrome title bar.
                      The tabs are fixed: not closable, floatable, or draggable into the documents pane. -->
                 <DocumentDock x:Name="ResultPane" Id="ResultPane" Proportion="0.35" IsCollapsable="False" CanDrop="False">
-                  <Document x:Name="Results" Id="Results" Title="Results" x:DataType="Document" CanFloat="False" CanPin="False" CanClose="False" CanDrag="False">
+                  <Document x:Name="Results" Id="Results" Title="{DynamicResource L_Pane_Results}" x:DataType="Document" CanFloat="False" CanPin="False" CanClose="False" CanDrag="False">
                       <local:ResultsView x:Name="ResultsView" DataContext="{Binding #This.ViewModel.CurrentOpenDocument}" />
                   </Document>
-                  <Document x:Name="Build" Id="Build" Title="Output" x:DataType="Document" CanFloat="False" CanPin="False" CanClose="False" CanDrag="False">
+                  <Document x:Name="Build" Id="Build" Title="{DynamicResource L_Pane_Output}" x:DataType="Document" CanFloat="False" CanPin="False" CanClose="False" CanDrag="False">
                       <local:PaneHeader.Content>
                         <ComboBox ItemsSource="{Binding #This.ViewModel.CurrentOpenDocument.BuildOutput.Documents}"
                                   SelectedItem="{Binding #This.ViewModel.CurrentOpenDocument.BuildOutput.SelectedDocument, Mode=TwoWay}"
@@ -205,7 +222,7 @@
                                   Padding="8 2"
                                   VerticalAlignment="Center"
                                   VerticalContentAlignment="Center"
-                                  ToolTip.Tip="Build output source">
+                                  ToolTip.Tip="{DynamicResource L_Tooltip_BuildOutputSource}">
                           <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="ui:BuildOutputDocument">
                               <TextBlock Text="{Binding DisplayName}" />
@@ -216,7 +233,7 @@
                       <local:BuildOutputView x:Name="BuildOutputView" DataContext="{Binding #This.ViewModel.CurrentOpenDocument}"
                                              ViewModel="{Binding #This.ViewModel}" />
                   </Document>
-                  <Document x:Name="IL" Id="IL" Title="IL" x:DataType="Document" CanFloat="False" CanPin="False" CanClose="False" CanDrag="False">
+                  <Document x:Name="IL" Id="IL" Title="{DynamicResource L_Pane_IL}" x:DataType="Document" CanFloat="False" CanPin="False" CanClose="False" CanDrag="False">
                       <local:ILViewer x:Name="ILViewer" Text="{Binding #This.ViewModel.CurrentOpenDocument.ILText}"
                                       ViewModel="{Binding #This.ViewModel}" />
                   </Document>

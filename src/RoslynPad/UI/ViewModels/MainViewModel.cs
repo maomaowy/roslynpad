@@ -16,6 +16,7 @@ using Microsoft.CodeAnalysis.MetadataAsSource;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Text;
 using RoslynPad.Build;
+using RoslynPad.Localization;
 using RoslynPad.Roslyn;
 using RoslynPad.Roslyn.Navigation;
 using RoslynPad.Themes;
@@ -38,7 +39,7 @@ public class MainViewModel : NotificationObject, IDisposable, INavigationHost
     private double _editorFontSize;
     private DocumentViewModel _documentRoot;
     private DocumentWatcher? _documentWatcher;
-    private bool? _isSystemDarkTheme;
+    private bool _listeningToSystemTheme;
     private IGlobalOptionService? _globalOptions;
 
     public IApplicationSettingsValues Settings { get; }
@@ -77,6 +78,19 @@ public class MainViewModel : NotificationObject, IDisposable, INavigationHost
         settings.LoadDefault();
         _editorConfigPath = Path.Combine(settings.GetDefaultDocumentPath(), ".editorconfig");
         Settings = settings.Values;
+
+        LocalizationManager.SetLanguage(Settings.Language);
+        Settings.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(IApplicationSettingsValues.Language))
+            {
+                LocalizationManager.SetLanguage(Settings.Language);
+            }
+            else if (args.PropertyName is nameof(IApplicationSettingsValues.BuiltInTheme) or nameof(IApplicationSettingsValues.CustomThemePath) or nameof(IApplicationSettingsValues.CustomThemeType))
+            {
+                InitializeTheme();
+            }
+        };
 
         _errorReporter.Initialize(s_currentVersion.ToString(), settings);
         _errorReporter.LastErrorChanged += () =>
@@ -117,7 +131,7 @@ public class MainViewModel : NotificationObject, IDisposable, INavigationHost
         var customThemePath = Settings.CustomThemePath;
         if (customThemePath is not null && !File.Exists(customThemePath))
         {
-            _errorReporter.ReportError(new FileNotFoundException("The configured custom theme file was not found.", customThemePath));
+            _errorReporter.ReportError(new FileNotFoundException(LocalizationManager.Get("Error_CustomThemeFileNotFound"), customThemePath));
             customThemePath = null;
         }
 
@@ -130,12 +144,13 @@ public class MainViewModel : NotificationObject, IDisposable, INavigationHost
             LoadTheme(fallbackTheme.path, fallbackTheme.type);
         }
 
-        if (UseSystemTheme)
+        if (UseSystemTheme && !_listeningToSystemTheme)
         {
+            _listeningToSystemTheme = true;
             ListenToSystemThemeChanges(() =>
             {
-                var buitInTheme = GetBuiltinThemePath(BuiltInTheme.System);
-                LoadTheme(buitInTheme.path, buitInTheme.type);
+                var builtInTheme = GetBuiltinThemePath(BuiltInTheme.System);
+                LoadTheme(builtInTheme.path, builtInTheme.type);
             });
         }
 
@@ -143,14 +158,7 @@ public class MainViewModel : NotificationObject, IDisposable, INavigationHost
         {
             if (builtInTheme == BuiltInTheme.System)
             {
-                var isSystemDarkTheme = IsSystemDarkTheme();
-                if (isSystemDarkTheme == _isSystemDarkTheme)
-                {
-                    return default;
-                }
-
-                builtInTheme = isSystemDarkTheme ? BuiltInTheme.Dark : BuiltInTheme.Light;
-                _isSystemDarkTheme = isSystemDarkTheme;
+                builtInTheme = IsSystemDarkTheme() ? BuiltInTheme.Dark : BuiltInTheme.Light;
             }
 
             (string file, ThemeType type) theme = builtInTheme switch
@@ -489,7 +497,7 @@ public class MainViewModel : NotificationObject, IDisposable, INavigationHost
         if (!IsInitialized) return;
 
         var dialog = _serviceProvider.GetRequiredService<IOpenFileDialog>();
-        dialog.Filter = new FileDialogFilter("C# Files", "*.cs", "*.csx");
+        dialog.Filter = new FileDialogFilter(LocalizationManager.Get("FileDialog_CSharpFiles"), "*.cs", "*.csx");
         var fileNames = await dialog.ShowAsync().ConfigureAwait(true);
         if (fileNames is not { Length: > 0 })
         {
@@ -745,6 +753,7 @@ public class MainViewModel : NotificationObject, IDisposable, INavigationHost
         var directory = Path.GetDirectoryName(document.Path)!;
 
         var dialog = _serviceProvider.GetRequiredService<ISaveDocumentDialog>();
+        dialog.Title = LocalizationManager.Get("Dialog_SaveAsTitle");
         dialog.ShowDoNotSave = false;
         dialog.AllowNameEdit = true;
         dialog.DocumentName = Path.GetFileNameWithoutExtension(document.Name);
@@ -882,7 +891,7 @@ public class MainViewModel : NotificationObject, IDisposable, INavigationHost
             }
             catch (ArgumentException)
             {
-                SetError(nameof(SearchText), "Regex", "Invalid regular expression");
+                SetError(nameof(SearchText), "Regex", LocalizationManager.Get("Error_InvalidRegex"));
 
                 return null;
             }
@@ -974,6 +983,29 @@ public class MainViewModel : NotificationObject, IDisposable, INavigationHost
     public IDelegateCommand ClearSearchCommand => _commands.Create(ClearSearch);
 
     public bool UseSystemTheme { get; private set; }
+
+    /// <summary>
+    /// Re-reads every user-visible string in the open documents after the language changed.
+    /// Dock titles are re-applied by the main window, since Dock persists them in the layout.
+    /// </summary>
+    public void RefreshLocalization()
+    {
+        foreach (var content in OpenDocuments)
+        {
+            switch (content)
+            {
+                case OpenDocumentViewModel open:
+                    open.RefreshLocalization();
+                    break;
+                case SettingsViewModel settings:
+                    settings.RefreshLocalization();
+                    break;
+                case SecretsViewModel secrets:
+                    secrets.RefreshLocalization();
+                    break;
+            }
+        }
+    }
 
     public ThemeType ThemeType { get; private set; }
 

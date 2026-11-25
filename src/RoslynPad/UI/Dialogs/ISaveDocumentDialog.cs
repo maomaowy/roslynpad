@@ -2,6 +2,7 @@
 
 public interface ISaveDocumentDialog : IDialog
 {
+    string? Title { get; set; }
     string? DocumentName { get; set; }
     SaveResult Result { get; }
     bool AllowNameEdit { get; set; }

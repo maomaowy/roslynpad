@@ -22,6 +22,7 @@ using RoslynPad.Roslyn.FileBasedPrograms;
 using Nerdbank.Streams;
 using NuGet.Versioning;
 using RoslynPad.Build.ILDecompiler;
+using RoslynPad.Localization;
 using RoslynPad.Roslyn;
 
 // Reflection-based System.Text.Json on build-output DTOs: this assembly is a trim root
@@ -946,7 +947,7 @@ internal partial class ExecutionHost : IExecutionHost, IDisposable
                 if (!restored)
                 {
                     using var output = CreateBuildOutputWriter(BuildOutputSource.Restore, cached: true);
-                    await output.WriteLineAsync("Restore up to date (cached).".AsMemory(), cancellationToken).ConfigureAwait(false);
+                    await output.WriteLineAsync(LocalizationManager.Get("Message_RestoreUpToDateCached").AsMemory(), cancellationToken).ConfigureAwait(false);
                 }
 
                 if (projBuildResult.UsesCache)

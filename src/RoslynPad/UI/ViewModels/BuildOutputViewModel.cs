@@ -1,5 +1,6 @@
 using System.Text;
 using RoslynPad.Build;
+using RoslynPad.Localization;
 
 namespace RoslynPad.UI;
 
@@ -28,6 +29,13 @@ public class BuildOutputViewModel : NotificationObject
     {
         get;
         set => SetProperty(ref field, value);
+    }
+
+    /// <summary>Re-reads the localized phase names after the UI language changed.</summary>
+    public void RefreshLocalization()
+    {
+        Restore.RefreshLocalization();
+        Compile.RefreshLocalization();
     }
 
     /// <summary>
@@ -64,7 +72,18 @@ public sealed class BuildOutputDocument(string name) : NotificationObject
 
     public string Name { get; } = name;
 
-    public string DisplayName => IsCached ? $"{Name} (cached)" : Name;
+    public string DisplayName => IsCached
+        ? LocalizationManager.Format("Output_CachedFormat", LocalizedName)
+        : LocalizedName;
+
+    private string LocalizedName => LocalizationManager.Get(Name switch
+    {
+        "Restore" => "Output_Restore",
+        "Compile" => "Output_Compile",
+        _ => Name,
+    });
+
+    public void RefreshLocalization() => OnPropertyChanged(nameof(DisplayName));
 
     public bool IsCached
     {

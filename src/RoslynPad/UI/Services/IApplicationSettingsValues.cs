@@ -79,6 +79,9 @@ public interface IApplicationSettingsValues : INotifyPropertyChanged
     [Description("Built-in theme to use (System, Light, or Dark).")]
     BuiltInTheme BuiltInTheme { get; set; }
 
+    [Description("User interface language. System follows the operating system language.")]
+    AppLanguage Language { get; set; }
+
     [Description("Default using directives for new documents. One per line.")]
     string[]? DefaultUsings { get; set; }
 }

@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using DialogHostAvalonia;
+using RoslynPad.Localization;
 using RoslynPad.UI;
 
 namespace RoslynPad;
@@ -29,28 +30,38 @@ public partial class SecretsView : UserControl
 
     private async ValueTask<bool> ConfirmRemoveSecretAsync(string name)
     {
-        var removeButton = new Button { Content = "Remove", Margin = new Avalonia.Thickness(0, 0, 8, 0) };
-        var cancelButton = new Button { Content = "Don't Remove" };
+        var removeButton = new Button
+        {
+            Content = LocalizationManager.Get("Secrets_RemoveButton"),
+            Margin = new Avalonia.Thickness(0, 0, 8, 0),
+            Classes = { "danger" },
+        };
+        var cancelButton = new Button
+        {
+            Content = LocalizationManager.Get("Secrets_DontRemoveButton"),
+            Classes = { "secondary" },
+        };
 
         removeButton.Click += (_, _) => DialogHost.Close(MainWindow.DialogHostIdentifier, true);
         cancelButton.Click += (_, _) => DialogHost.Close(MainWindow.DialogHostIdentifier, false);
 
         var content = new StackPanel
         {
-            Margin = new Avalonia.Thickness(15),
+            Margin = new Avalonia.Thickness(20),
             Children =
             {
                 new TextBlock
                 {
-                    Text = $"Are you sure you want to remove the secret '{name}'?",
+                    Text = LocalizationManager.Format("Secrets_RemoveConfirmFormat", name),
                     TextWrapping = Avalonia.Media.TextWrapping.Wrap,
-                    Margin = new Avalonia.Thickness(0, 0, 0, 15)
+                    Margin = new Avalonia.Thickness(0, 0, 0, 16)
                 },
                 new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
                     HorizontalAlignment = HorizontalAlignment.Right,
-                    Children = { removeButton, cancelButton }
+                    Spacing = 8,
+                    Children = { cancelButton, removeButton }
                 }
             }
         };

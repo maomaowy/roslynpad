@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using DialogHostAvalonia;
+using RoslynPad.Localization;
 using RoslynPad.UI;
 
 namespace RoslynPad;
@@ -21,6 +22,7 @@ internal partial class SaveDocumentDialog : UserControl, ISaveDocumentDialog, IN
     private bool _allowNameEdit;
     private string? _filePath;
     private SaveResult _result;
+    private string? _title = LocalizationManager.Get("Dialog_SaveTitle");
 
     static SaveDocumentDialog()
     {
@@ -58,6 +60,10 @@ internal partial class SaveDocumentDialog : UserControl, ISaveDocumentDialog, IN
         AvaloniaProperty.RegisterDirect<SaveDocumentDialog, SaveResult>(nameof(Result),
             d => d._result, (d, value) => d._result = value);
 
+    public static readonly DirectProperty<SaveDocumentDialog, string?> TitleProperty =
+        AvaloniaProperty.RegisterDirect<SaveDocumentDialog, string?>(nameof(Title),
+            d => d._title, (d, value) => d._title = value);
+
     public static readonly DirectProperty<SaveDocumentDialog, bool> AllowNameEditProperty =
         AvaloniaProperty.RegisterDirect<SaveDocumentDialog, bool>(nameof(AllowNameEdit),
             d => d._allowNameEdit, (d, value) => d._allowNameEdit = value);
@@ -94,6 +100,12 @@ internal partial class SaveDocumentDialog : UserControl, ISaveDocumentDialog, IN
     {
         get => _showDoNotSave;
         set => SetAndRaise(ShowDoNotSaveProperty, ref _showDoNotSave, value);
+    }
+
+    public string? Title
+    {
+        get => _title;
+        set => SetAndRaise(TitleProperty, ref _title, value);
     }
 
     public string? FilePath

@@ -11,7 +11,7 @@
   </UserControl.Resources>
   <Grid RowDefinitions="Auto,*">
     <Border Grid.Row="0"
-            Padding="6 4"
+            Padding="6 3"
             BorderThickness="0 0 0 1"
             BorderBrush="{DynamicResource {x:Static local:ThemeDictionary.PanelBorder}}">
       <StackPanel Name="Toolbar"
@@ -19,7 +19,8 @@
                   Spacing="2">
         <Button Classes="tool"
                 Command="{Binding RunCommand, Mode=OneTime}"
-                ToolTip.Tip="Run (F5)">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_Run}"
+                ToolTip.Tip="{DynamicResource L_Tooltip_Run}">
           <Grid>
             <Image Source="{StaticResource Run}" />
             <ProgressBar VerticalAlignment="Bottom"
@@ -33,13 +34,14 @@
         <ToggleButton Classes="tool"
                       Command="{Binding ToggleLiveModeCommand, Mode=OneTime}"
                       IsChecked="{Binding IsLiveMode, Mode=OneWay}"
-                      AutomationProperties.Name="Live Mode"
-                      ToolTip.Tip="Toggle Live Mode (Alt+F5)">
+                      AutomationProperties.Name="{DynamicResource L_Automation_LiveMode}"
+                      ToolTip.Tip="{DynamicResource L_Tooltip_ToggleLiveMode}">
           <Image Source="{StaticResource Rocket}" />
         </ToggleButton>
         <Button Classes="tool"
                 Command="{Binding TerminateCommand, Mode=OneTime}"
-                ToolTip.Tip="{OnPlatform Terminate process (Shift+F5), macOS=Terminate process (⇧ F5)}"
+                AutomationProperties.Name="{DynamicResource L_Tooltip_Terminate}"
+                ToolTip.Tip="{OnPlatform Default={DynamicResource L_Tooltip_Terminate}, macOS={DynamicResource L_Tooltip_TerminateMac}}"
                 IsEnabled="{Binding IsRunning}">
           <Image Source="{StaticResource Stop}" />
         </Button>
@@ -57,50 +59,58 @@
         </Grid>
         <ComboBox ItemsSource="{Binding AvailablePlatforms, Mode=OneTime}"
                   SelectedItem="{Binding Platform}"
-                  MinHeight="26"
+                  Classes="field"
+                  Height="28"
+                  MinWidth="140"
                   FontSize="13"
                   Padding="8 3"
                   VerticalAlignment="Center"
                   VerticalContentAlignment="Center"
-                  ToolTip.Tip="Target platform" />
+                  AutomationProperties.Name="{DynamicResource L_Tooltip_TargetPlatform}"
+                  ToolTip.Tip="{DynamicResource L_Tooltip_TargetPlatform}" />
         <Button Classes="tool"
-                ToolTip.Tip="Set platform as default"
+                AutomationProperties.Name="{DynamicResource L_Tooltip_SetDefaultPlatform}"
+                ToolTip.Tip="{DynamicResource L_Tooltip_SetDefaultPlatform}"
                 Command="{Binding SetDefaultPlatformCommand, Mode=OneTime}">
           <Image Source="{StaticResource SetPlatform}" />
         </Button>
         <Separator Classes="toolbar" />
         <Button Classes="tool"
                 Command="{Binding SaveCommand, Mode=OneTime}"
-                ToolTip.Tip="{OnPlatform Save (Ctrl+S), macOS=Save (⌘ S)}">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_Save}"
+                ToolTip.Tip="{OnPlatform Default={DynamicResource L_Tooltip_Save}, macOS={DynamicResource L_Tooltip_SaveMac}}">
           <Image Source="{StaticResource Save}" />
         </Button>
         <Button Classes="tool"
                 Command="{Binding MainViewModel.NewDocumentCommand, Mode=OneTime}"
                 CommandParameter="{Binding SourceCodeKind}"
-                AutomationProperties.Name="New Document"
-                ToolTip.Tip="New Document">
+                AutomationProperties.Name="{DynamicResource L_Automation_NewDocument}"
+                ToolTip.Tip="{DynamicResource L_Tooltip_NewDocument}">
           <Image Source="{Binding Converter={x:Static local:DocumentIconConverter.Instance}}" />
         </Button>
         <Button Classes="tool"
                 Command="{Binding OpenBuildPathCommand, Mode=OneTime}"
-                ToolTip.Tip="Open Build Folder">
+                AutomationProperties.Name="{DynamicResource L_Tooltip_OpenBuildFolder}"
+                ToolTip.Tip="{DynamicResource L_Tooltip_OpenBuildFolder}">
           <Image Source="{StaticResource PackageFolder}" />
         </Button>
         <ToggleButton Classes="tool"
                       IsChecked="{Binding MainViewModel.EnableInlineDiagnostics}"
-                      ToolTip.Tip="Inline Diagnostics">
+                      AutomationProperties.Name="{DynamicResource L_Tooltip_InlineDiagnostics}"
+                      ToolTip.Tip="{DynamicResource L_Tooltip_InlineDiagnostics}">
           <Image Source="{StaticResource InlineDiagnostics}" />
         </ToggleButton>
         <Separator Classes="toolbar" />
         <Menu Background="Transparent"
               Name="RootMenu"
+              AutomationProperties.Name="{DynamicResource L_Tooltip_NuGetPackages}"
               VerticalAlignment="Center">
           <MenuItem Name="RootNuGetMenu"
                     Padding="5"
                     IsSubMenuOpen="{Binding NuGet.IsPackagesMenuOpen}"
                     ItemsSource="{Binding NuGet.Packages}"
                     Header="{Binding NuGet, Mode=OneTime}"
-                    ToolTip.Tip="NuGet Packages">
+                    ToolTip.Tip="{DynamicResource L_Tooltip_NuGetPackages}">
             <MenuItem.Styles>
               <Style Selector="MenuItem Popup">
                 <Setter Property="MaxHeight" Value="400" />
@@ -139,39 +149,45 @@
           </MenuItem>
         </Menu>
         <TextBox Name="NuGetSearch"
+                 Classes="field"
+                 AutomationProperties.Name="{DynamicResource L_Placeholder_SearchNuGet}"
                  Text="{Binding NuGet.SearchTerm}"
-                 PlaceholderText="{OnPlatform Search NuGet (Ctrl+T), macOS=Search NuGet (⌘ T)}"
+                 PlaceholderText="{OnPlatform Default={DynamicResource L_Placeholder_SearchNuGet}, macOS={DynamicResource L_Placeholder_SearchNuGetMac}}"
                  Width="220"
-                 MinHeight="26"
+                 MinHeight="28"
                  FontSize="13"
                  Padding="8 3"
                  VerticalAlignment="Center"
                  VerticalContentAlignment="Center" />
         <CheckBox IsChecked="{Binding NuGet.Prerelease}"
-                  ToolTip.Tip="Include prerelease packages"
-                  Content="Prerelease"
+                  ToolTip.Tip="{DynamicResource L_Tooltip_IncludePrerelease}"
+                  Content="{DynamicResource L_Doc_Prerelease}"
                   MinHeight="0"
                   FontSize="13"
                   Margin="4 0 0 0"
                   VerticalAlignment="Center" />
         <Separator Classes="toolbar" />
         <Button Classes="tool"
-                ToolTip.Tip="{OnPlatform Format Document (Ctrl+D), macOS=Format Document (⌘ D)}"
+                AutomationProperties.Name="{DynamicResource L_Tooltip_FormatDocument}"
+                ToolTip.Tip="{OnPlatform Default={DynamicResource L_Tooltip_FormatDocument}, macOS={DynamicResource L_Tooltip_FormatDocumentMac}}"
                 Command="{Binding FormatDocumentCommand, Mode=OneTime}">
           <Image Source="{StaticResource FormatDocument}" />
         </Button>
         <Button Classes="tool"
-                ToolTip.Tip="{OnPlatform Comment Selection (Ctrl+K), macOS=Comment Selection (⌘ K)}"
+                AutomationProperties.Name="{DynamicResource L_Tooltip_CommentSelection}"
+                ToolTip.Tip="{OnPlatform Default={DynamicResource L_Tooltip_CommentSelection}, macOS={DynamicResource L_Tooltip_CommentSelectionMac}}"
                 Command="{Binding CommentSelectionCommand, Mode=OneTime}">
           <Image Source="{StaticResource CommentCode}" />
         </Button>
         <Button Classes="tool"
-                ToolTip.Tip="{OnPlatform Uncomment Selection (Ctrl+U), macOS=Uncomment Selection (⌘ U)}"
+                AutomationProperties.Name="{DynamicResource L_Tooltip_UncommentSelection}"
+                ToolTip.Tip="{OnPlatform Default={DynamicResource L_Tooltip_UncommentSelection}, macOS={DynamicResource L_Tooltip_UncommentSelectionMac}}"
                 Command="{Binding UncommentSelectionCommand, Mode=OneTime}">
           <Image Source="{StaticResource UncommentCode}" />
         </Button>
         <Button Classes="tool"
-                ToolTip.Tip="Rename Symbol (F2)"
+                AutomationProperties.Name="{DynamicResource L_Tooltip_RenameSymbol}"
+                ToolTip.Tip="{DynamicResource L_Tooltip_RenameSymbol}"
                 Command="{Binding RenameSymbolCommand, Mode=OneTime}">
           <Image Source="{StaticResource Rename}" />
         </Button>

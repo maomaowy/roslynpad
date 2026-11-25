@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NuGet.Versioning;
 using RoslynPad.Build;
+using RoslynPad.Localization;
 using RoslynPad.Utilities;
 
 namespace RoslynPad.UI;
@@ -22,7 +23,6 @@ public class OpenDocumentViewModel : NotificationObject, IDisposable, IDocumentC
     private const string DefaultDocumentName = "New";
     private const string RegularFileExtension = ".cs";
     private const string ScriptFileExtension = ".csx";
-    private const string DefaultILText = "// Run to view IL";
 
     private readonly IServiceProvider _serviceProvider;
     private readonly IAppDispatcher _dispatcher;
@@ -45,6 +45,7 @@ public class OpenDocumentViewModel : NotificationObject, IDisposable, IDocumentC
     private DocumentId? _documentId;
     private bool _restoreSuccessful;
     private SourceCodeKind? _sourceCodeKind;
+    private string _ilPlaceholder = LocalizationManager.Get("IL_Placeholder");
 
     public string Id { get; }
     public string BuildPath { get; }
@@ -60,6 +61,17 @@ public class OpenDocumentViewModel : NotificationObject, IDisposable, IDocumentC
     }
 
     public IEnumerable<IResultObject> Results => _results;
+
+    public bool HasResults
+    {
+        get
+        {
+            lock (_results)
+            {
+                return _results.Count > 0;
+            }
+        }
+    }
 
     public IDelegateCommand ToggleLiveModeCommand { get; }
     public IDelegateCommand SetDefaultPlatformCommand { get; }
@@ -113,14 +125,28 @@ public class OpenDocumentViewModel : NotificationObject, IDisposable, IDocumentC
     public int CurrentLine
     {
         get;
-        set => SetProperty(ref field, value);
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                OnPropertyChanged(nameof(CaretPositionText));
+            }
+        }
     } = 1;
 
     public int CurrentColumn
     {
         get;
-        set => SetProperty(ref field, value);
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                OnPropertyChanged(nameof(CaretPositionText));
+            }
+        }
     } = 1;
+
+    public string CaretPositionText => LocalizationManager.Format("Status_CaretPositionFormat", CurrentLine, CurrentColumn);
 
     public string ILText
     {
@@ -162,7 +188,7 @@ public class OpenDocumentViewModel : NotificationObject, IDisposable, IDocumentC
         ToggleLiveModeCommand = commands.Create(() => IsLiveMode = !IsLiveMode);
         SetDefaultPlatformCommand = commands.Create(SetDefaultPlatform);
 
-        ILText = DefaultILText;
+        ILText = _ilPlaceholder;
 
         InitializePlatforms();
     }
@@ -312,9 +338,16 @@ public class OpenDocumentViewModel : NotificationObject, IDisposable, IDocumentC
 
     private void AddResult(IResultObject o)
     {
+        bool wasEmpty;
         lock (_results)
         {
+            wasEmpty = _results.Count == 0;
             _results.Add(o);
+        }
+
+        if (wasEmpty)
+        {
+            RaiseHasResultsChanged();
         }
 
         MainViewModel.OnResultsAvailable();
@@ -739,7 +772,7 @@ public class OpenDocumentViewModel : NotificationObject, IDisposable, IDocumentC
 
         if (!ShowIL)
         {
-            ILText = DefaultILText;
+            ILText = _ilPlaceholder;
         }
 
         try
@@ -793,7 +826,12 @@ public class OpenDocumentViewModel : NotificationObject, IDisposable, IDocumentC
             _results.Clear();
             _results.AddRange(_restoreResults);
         }
+
+        RaiseHasResultsChanged();
     }
+
+    private void RaiseHasResultsChanged() =>
+        _dispatcher.InvokeAsync(() => OnPropertyChanged(nameof(HasResults)));
 
     private OptimizationLevel OptimizationLevel => MainViewModel.Settings.OptimizeCompilation ? OptimizationLevel.Release : OptimizationLevel.Debug;
 
@@ -896,6 +934,20 @@ public class OpenDocumentViewModel : NotificationObject, IDisposable, IDocumentC
     public void Dispose()
     {
         _runCts?.Dispose();
+    }
+
+    /// <summary>Re-reads localized text (IL placeholder, caret position, build phases).</summary>
+    public void RefreshLocalization()
+    {
+        var placeholder = LocalizationManager.Get("IL_Placeholder");
+        if (string.Equals(ILText, _ilPlaceholder, StringComparison.Ordinal))
+        {
+            ILText = placeholder;
+        }
+
+        _ilPlaceholder = placeholder;
+        OnPropertyChanged(nameof(CaretPositionText));
+        BuildOutput.RefreshLocalization();
     }
 
     internal event Action<TextSpan>? NavigationRequested;

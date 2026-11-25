@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Text;
 using System.Text.Json.Serialization;
+using RoslynPad.Localization;
 
 namespace RoslynPad.Build;
 
@@ -107,7 +108,7 @@ public class ExceptionResultObject : ResultObject
 
 public static class ErrorMessages
 {
-    public const string MissingSdk = "The .NET SDK is required to use RoslynPad. https://aka.ms/dotnet/download";
+    public static string MissingSdk => LocalizationManager.Get("Error_MissingSdk");
 }
 
 public class InputReadRequest
@@ -124,6 +125,7 @@ public class CompilationErrorResultObject : IResultObject, IResultWithLineNumber
 {
     public string? ErrorCode { get; set; }
     public string? Severity { get; set; }
+    public string SeverityDisplay => LocalizationManager.Get($"Severity_{Severity}", Severity ?? string.Empty);
     public int? LineNumber { get; set; }
     public int Column { get; set; }
     public string? Message { get; set; }

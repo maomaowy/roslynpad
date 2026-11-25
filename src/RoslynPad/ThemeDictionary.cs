@@ -1,4 +1,4 @@
-﻿using Avalonia.Media;
+using Avalonia.Media;
 using RoslynPad.Themes;
 
 namespace RoslynPad;
@@ -62,6 +62,36 @@ public class ThemeDictionary : ThemeDictionaryBase
     public const string IconForeground = "icon.foreground";
     public const string PanelTitleActiveForeground = "panelTitle.activeForeground";
     public const string PanelTitleInactiveForeground = "panelTitle.inactiveForeground";
+    public const string PanelTitleActiveBorder = "panelTitle.activeBorder";
+    public const string ErrorForeground = "errorForeground";
+    public const string DisabledForeground = "disabledForeground";
+    public const string InputBackground = "input.background";
+    public const string InputForeground = "input.foreground";
+    public const string InputPlaceholderForeground = "input.placeholderForeground";
+    public const string ButtonBackground = "button.background";
+    public const string ButtonForeground = "button.foreground";
+    public const string ButtonHoverBackground = "button.hoverBackground";
+    public const string ButtonBorder = "button.border";
+    public const string ButtonSecondaryBackground = "button.secondaryBackground";
+    public const string ButtonSecondaryForeground = "button.secondaryForeground";
+    public const string ButtonSecondaryHoverBackground = "button.secondaryHoverBackground";
+    public const string ButtonSecondaryBorder = "button.secondaryBorder";
+    public const string MenuBackground = "menu.background";
+    public const string MenuForeground = "menu.foreground";
+    public const string MenuBorder = "menu.border";
+    public const string MenuSelectionBackground = "menu.selectionBackground";
+    public const string MenuSeparatorBackground = "menu.separatorBackground";
+    public const string WidgetBorder = "widget.border";
+    public const string WidgetShadow = "widget.shadow";
+    public const string EditorWidgetBackground = "editorWidget.background";
+    public const string ProgressBarBackground = "progressBar.background";
+    public const string ListHoverForeground = "list.hoverForeground";
+    public const string ListInactiveSelectionForeground = "list.inactiveSelectionForeground";
+    public const string ListFocusOutline = "list.focusOutline";
+    public const string ListWarningForeground = "list.warningForeground";
+    public const string BadgeBackground = "badge.background";
+    public const string BadgeForeground = "badge.foreground";
+    public const string TitleBarBorder = "titleBar.border";
 
     private void Initialize(Theme theme)
     {
@@ -80,6 +110,8 @@ public class ThemeDictionary : ThemeDictionaryBase
 
         MapDockResources(theme.Type);
         MapScrollBarDefaults(theme.Type);
+        MapSemanticDefaults(theme.Type);
+        MapFluentAccent(theme.Type);
     }
 
     /// <summary>
@@ -100,6 +132,112 @@ public class ThemeDictionary : ThemeDictionaryBase
             SetThemeColor(name, color);
         }
     }
+
+    /// <summary>Copies an already mapped theme color into a missing semantic key.</summary>
+    private void SetDefaultThemeColorFrom(string name, params string[] sourceIds)
+    {
+        if (TryGetValue(name, out _))
+        {
+            return;
+        }
+
+        foreach (var id in sourceIds)
+        {
+            if (TryGetValue(id, out var value) && value is SolidColorBrush brush)
+            {
+                this[name] = brush;
+                this[name + "Color"] = brush.Color;
+                return;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Semantic colors for the app's controls. The bundled 2026 themes provide most of these;
+    /// the classic VS Code themes predate them, so coded defaults keep both light and dark
+    /// readable when a custom theme omits a key.
+    /// </summary>
+    private void MapSemanticDefaults(ThemeType type)
+    {
+        var isLight = type == ThemeType.Light;
+
+        SetDefaultThemeColor(ErrorForeground, isLight ? "#AD0707" : "#F48771");
+        SetDefaultThemeColor(DisabledForeground, isLight ? "#BBBBBB" : "#555555");
+        SetDefaultThemeColor(DescriptionForeground, isLight ? "#606060" : "#8C8C8C");
+        SetDefaultThemeColor(InputPlaceholderForeground, isLight ? "#999999" : "#555555");
+        SetDefaultThemeColor(ButtonBackground, isLight ? "#0069CC" : "#297AA0");
+        SetDefaultThemeColor(ButtonForeground, "#FFFFFF");
+        SetDefaultThemeColor(ButtonHoverBackground, isLight ? "#0063C1" : "#2B7DA3");
+        SetDefaultThemeColor(ButtonBorder, isLight ? "#0069CC" : "#297AA0");
+        SetDefaultThemeColor(ButtonSecondaryBackground, isLight ? "#EAEAEA" : "#333536");
+        SetDefaultThemeColor(ButtonSecondaryForeground, isLight ? "#202020" : "#BFBFBF");
+        SetDefaultThemeColor(ButtonSecondaryHoverBackground, isLight ? "#F2F3F4" : "#3A3B3C");
+        SetDefaultThemeColor(ButtonSecondaryBorder, isLight ? "#EAEAEA" : "#333536");
+        SetDefaultThemeColor(MenuBackground, isLight ? "#FAFAFD" : "#202122");
+        SetDefaultThemeColor(MenuForeground, isLight ? "#202020" : "#BFBFBF");
+        SetDefaultThemeColor(MenuBorder, isLight ? "#E4E5E6" : "#2A2B2C");
+        SetDefaultThemeColor(MenuSeparatorBackground, isLight ? "#EEEEF1" : "#2A2B2C");
+        SetDefaultThemeColor(WidgetBorder, isLight ? "#E2E2E5" : "#2A2B2C");
+        SetDefaultThemeColor(WidgetShadow, isLight ? "#33000000" : "#99000000");
+        SetDefaultThemeColor(ProgressBarBackground, "#878889");
+        SetDefaultThemeColor(StatusBarItemErrorBackground, "#C72E0F");
+        SetDefaultThemeColor(StatusBarItemErrorForeground, "#FFFFFF");
+        SetDefaultThemeColor(ListWarningForeground, isLight ? "#667309" : "#E5BA7D");
+        SetDefaultThemeColor(BadgeForeground, "#FFFFFF");
+
+        SetDefaultThemeColorFrom(InputBackground, EditorBackground, SideBarBackground);
+        SetDefaultThemeColorFrom(InputForeground, Foreground);
+        SetDefaultThemeColorFrom(InputBorder, InputBorder, WidgetBorder, EditorGroupBorder, PanelBorder);
+        SetDefaultThemeColorFrom(MenuSelectionBackground, ListInactiveSelectionBackground, ListActiveSelectionBackground);
+        SetDefaultThemeColor(MenuSelectionBackground, isLight ? "#00000014" : "#FFFFFF14");
+        SetDefaultThemeColorFrom(EditorWidgetBackground, EditorWidgetBackground, EditorBackground, SideBarBackground);
+        SetDefaultThemeColorFrom(ListHoverForeground, ListHoverForeground, Foreground);
+        SetDefaultThemeColorFrom(ListInactiveSelectionForeground, ListInactiveSelectionForeground, Foreground);
+        SetDefaultThemeColorFrom(ListFocusOutline, ListFocusOutline, FocusBorder);
+        SetDefaultThemeColorFrom(PanelTitleActiveBorder, PanelTitleActiveBorder, TabActiveBorderTop, FocusBorder);
+        SetDefaultThemeColorFrom(BadgeBackground, BadgeBackground, ButtonBackground);
+        SetDefaultThemeColorFrom(TitleBarBorder, TitleBarBorder, PanelBorder);
+    }
+
+    /// <summary>
+    /// Maps the Fluent theme's accent resources to the VS Code theme accent so controls that
+    /// keep their Fluent templates (menus, check boxes, sliders, progress bars, popups) follow
+    /// the active theme instead of the fixed Fluent blue.
+    /// </summary>
+    private void MapFluentAccent(ThemeType type)
+    {
+        var accent = GetThemeColor(FocusBorder,
+            GetThemeColor(ButtonBackground, type == ThemeType.Light ? Color.Parse("#0069CC") : Color.Parse("#3994BC")));
+
+        // The focus border is translucent in several themes; the Fluent accent itself must stay opaque.
+        accent = Color.FromRgb(accent.R, accent.G, accent.B);
+
+        this["SystemAccentColor"] = accent;
+        this["SystemAccentColorLight1"] = Blend(accent, Colors.White, 0.1);
+        this["SystemAccentColorLight2"] = Blend(accent, Colors.White, 0.2);
+        this["SystemAccentColorLight3"] = Blend(accent, Colors.White, 0.3);
+        this["SystemAccentColorDark1"] = Blend(accent, Colors.Black, 0.1);
+        this["SystemAccentColorDark2"] = Blend(accent, Colors.Black, 0.2);
+        this["SystemAccentColorDark3"] = Blend(accent, Colors.Black, 0.3);
+
+        var accentBrush = new SolidColorBrush(accent);
+        this["SystemControlHighlightAccentBrush"] = accentBrush;
+        this["SystemControlForegroundAccentBrush"] = accentBrush;
+        this["SystemControlBackgroundAccentBrush"] = accentBrush;
+        this["SystemControlHighlightAltAccentBrush"] = accentBrush;
+        this["SystemControlHighlightListAccentLowBrush"] = new SolidColorBrush(accent, 0.3);
+        this["SystemControlHighlightListAccentMediumBrush"] = new SolidColorBrush(accent, 0.6);
+        this["SystemControlHighlightListAccentHighBrush"] = new SolidColorBrush(accent, 0.8);
+    }
+
+    private Color GetThemeColor(string name, Color fallback) =>
+        TryGetValue(name + "Color", out var value) && value is Color color ? color : fallback;
+
+    private static Color Blend(Color color, Color target, double amount) => Color.FromArgb(
+        color.A,
+        (byte)(color.R + (target.R - color.R) * amount),
+        (byte)(color.G + (target.G - color.G) * amount),
+        (byte)(color.B + (target.B - color.B) * amount));
 
     /// <summary>
     /// Maps VS Code theme colors onto the semantic brush keys consumed by Dock's control themes,
@@ -154,7 +292,15 @@ public class ThemeDictionary : ThemeDictionaryBase
             this["DockTabPillBrush"] = new SolidColorBrush(foreground, isLight ? 0.04 : 0.05);
             this["DockTabPillHoverBrush"] = new SolidColorBrush(foreground, isLight ? 0.06 : 0.08);
             this["DockTabPillSelectedBrush"] = new SolidColorBrush(foreground, isLight ? 0.10 : 0.18);
-            this["DockTabPillForegroundBrush"] = new SolidColorBrush(foreground, 0.5);
+        }
+
+        // Inactive tab text must stay readable; VS Code tab.inactiveForeground is the semantic
+        // source, with disabled-foreground or 70% foreground fallbacks for classic themes.
+        MapDockBrush("DockTabPillForegroundBrush", TabInactiveForeground, DisabledForeground);
+        if (!TryGetValue("DockTabPillForegroundBrush", out _) &&
+            TryGetValue(Foreground + "Color", out var pillForeground) && pillForeground is Color pillColor)
+        {
+            this["DockTabPillForegroundBrush"] = new SolidColorBrush(pillColor, 0.7);
         }
 
         MapDockBrush("DockThemeForegroundBrush", Foreground);

@@ -16,6 +16,7 @@ namespace RoslynPad;
 internal partial class BuildOutputView : UserControl
 {
     private readonly CodeEditorView _editor;
+    private readonly TextBlock _emptyHint;
     private BuildOutputViewModel? _buildOutput;
     private BuildOutputDocument? _document;
     private BuildOutputDocument.ReadPosition _position;
@@ -31,6 +32,7 @@ internal partial class BuildOutputView : UserControl
         InitializeComponent();
 
         _editor = this.FindControl<CodeEditorView>("Editor") ?? throw new InvalidOperationException("Missing Editor");
+        _emptyHint = this.FindControl<TextBlock>("EmptyHint") ?? throw new InvalidOperationException("Missing EmptyHint");
         DataContextChanged += (_, _) => OnDataContextChanged();
     }
 
@@ -105,6 +107,7 @@ internal partial class BuildOutputView : UserControl
         {
             _position = default;
             _editor.Buffer?.Replace(new Span(0, _editor.Buffer.CurrentSnapshot.Length), string.Empty);
+            _emptyHint.IsVisible = true;
             return;
         }
 
@@ -139,6 +142,8 @@ internal partial class BuildOutputView : UserControl
                 ScrollToEnd();
             }
         }
+
+        _emptyHint.IsVisible = buffer.CurrentSnapshot.Length == 0;
     }
 
     private bool IsAtBottom()

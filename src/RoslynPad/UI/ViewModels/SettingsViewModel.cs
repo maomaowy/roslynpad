@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using RoslynPad.Localization;
 
 namespace RoslynPad.UI;
 
@@ -21,12 +22,14 @@ public partial class SettingsViewModel : NotificationObject, IDocumentContent
 
     public string Id => "settings";
 
-    public string Title => "Settings";
+    public string Title => LocalizationManager.Get("Tab_Settings");
 
     public bool IsDirty => false;
 
     public ObservableCollection<SettingItem> AllSettings { get; }
     public ObservableCollection<SettingItem> FilteredSettings { get; }
+
+    public bool HasFilteredSettings => FilteredSettings.Count > 0;
 
     public string? FilterText
     {
@@ -52,6 +55,8 @@ public partial class SettingsViewModel : NotificationObject, IDocumentContent
                 FilteredSettings.Add(setting);
             }
         }
+
+        OnPropertyChanged(nameof(HasFilteredSettings));
     }
 
     private static string[]? ParseFilterTerms(string? filter)
@@ -87,7 +92,11 @@ public partial class SettingsViewModel : NotificationObject, IDocumentContent
             var description = property.GetCustomAttribute<DescriptionAttribute>()?.Description;
             var displayName = property.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? FormatPropertyName(property.Name);
 
-            items.Add(new SettingItem(property, _settings, displayName, description, property.PropertyType));
+            displayName = LocalizationManager.Get($"Setting_{property.Name}_Name", displayName);
+            var localizedDescription = LocalizationManager.Get($"Setting_{property.Name}_Description", description ?? string.Empty);
+
+            items.Add(new SettingItem(property, _settings, displayName,
+                string.IsNullOrEmpty(localizedDescription) ? null : localizedDescription, property.PropertyType));
         }
 
         return items;
@@ -112,4 +121,26 @@ public partial class SettingsViewModel : NotificationObject, IDocumentContent
 
     [GeneratedRegex(@"\W")]
     private static partial Regex NonWhitespaceRegex();
+
+    /// <summary>Rebuilds the localized names/descriptions after the UI language changed.</summary>
+    public void RefreshLocalization()
+    {
+        OnPropertyChanged(nameof(Title));
+
+        var items = CreateSettingItems();
+        AllSettings.Clear();
+        foreach (var item in items)
+        {
+            AllSettings.Add(item);
+        }
+
+        ApplyFilter();
+
+        // A filter typed in the previous language rarely matches the translated names;
+        // show every setting instead of an empty list.
+        if (FilteredSettings.Count == 0 && !string.IsNullOrEmpty(FilterText))
+        {
+            FilterText = null;
+        }
+    }
 }

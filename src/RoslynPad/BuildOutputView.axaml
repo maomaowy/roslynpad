@@ -5,5 +5,15 @@
              xmlns:ui="clr-namespace:RoslynPad.UI"
              x:DataType="ui:OpenDocumentViewModel">
   <!-- The source combo lives in the pane's tab pill row via PaneHeader.Content (MainWindow.axaml) -->
-  <local:CodeEditorView Name="Editor" />
+  <Grid>
+    <local:CodeEditorView Name="Editor" />
+    <TextBlock x:Name="EmptyHint"
+               Classes="emptyState"
+               Text="{DynamicResource L_Output_Empty}"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               TextWrapping="Wrap"
+               MaxWidth="360"
+               IsHitTestVisible="False" />
+  </Grid>
 </UserControl>

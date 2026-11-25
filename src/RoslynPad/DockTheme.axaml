@@ -104,12 +104,20 @@
     <Setter Property="Background" Value="{DynamicResource DockTabPillBrush}" />
     <Setter Property="Foreground" Value="{DynamicResource DockTabPillForegroundBrush}" />
     <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="FontWeight" Value="Normal" />
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="MinHeight" Value="26" />
   </Style>
   <Style Selector="DocumentTabStripItem:pointerover">
     <Setter Property="Background" Value="{DynamicResource DockTabPillHoverBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static rp:ThemeDictionary.Foreground}}" />
   </Style>
   <Style Selector="DocumentTabStripItem:selected">
+    <Setter Property="Background" Value="{DynamicResource DockTabPillSelectedBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static rp:ThemeDictionary.Foreground}}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+  <Style Selector="DocumentTabStripItem:selected:pointerover">
     <Setter Property="Background" Value="{DynamicResource DockTabPillSelectedBrush}" />
     <Setter Property="Foreground" Value="{DynamicResource {x:Static rp:ThemeDictionary.Foreground}}" />
   </Style>
@@ -190,6 +198,8 @@
   </Style>
   <Style Selector="ToolChromeControl /template/ TextBlock#PART_Title">
     <Setter Property="Foreground" Value="{DynamicResource {x:Static rp:ThemeDictionary.PanelTitleActiveForeground}}" />
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="FontWeight" Value="SemiBold" />
   </Style>
 
   <!-- Tool pane content fills the card; no inner side borders -->
@@ -207,9 +217,11 @@
     <Setter Property="Background" Value="{DynamicResource DockTabPillBrush}" />
     <Setter Property="Foreground" Value="{DynamicResource {x:Static rp:ThemeDictionary.PanelTitleInactiveForeground}}" />
     <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="FontSize" Value="12" />
   </Style>
   <Style Selector="ToolTabStripItem:pointerover">
     <Setter Property="Background" Value="{DynamicResource DockTabPillHoverBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static rp:ThemeDictionary.PanelTitleActiveForeground}}" />
   </Style>
   <Style Selector="ToolTabStripItem /template/ Border">
     <Setter Property="CornerRadius" Value="4" />
@@ -223,6 +235,7 @@
     <Setter Property="Padding" Value="8,3" />
     <Setter Property="Margin" Value="6,4,0,4" />
     <Setter Property="Foreground" Value="{DynamicResource {x:Static rp:ThemeDictionary.PanelTitleActiveForeground}}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
   </Style>
   <Style Selector="ToolTabStripItem:selected:pointerover">
     <Setter Property="Background" Value="{DynamicResource DockTabPillSelectedBrush}" />

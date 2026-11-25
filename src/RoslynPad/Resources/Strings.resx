@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- Menu and application shell -->
+  <data name="App_SettingsMenu" xml:space="preserve"><value>Settings...</value></data>
+  <data name="Menu_File" xml:space="preserve"><value>File</value></data>
+  <data name="Menu_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Menu_Run" xml:space="preserve"><value>Run</value></data>
+  <data name="Menu_NewFileApp" xml:space="preserve"><value>New File-Based App</value></data>
+  <data name="Menu_NewScript" xml:space="preserve"><value>New Script (Legacy)</value></data>
+  <data name="Menu_Open" xml:space="preserve"><value>Open...</value></data>
+  <data name="Menu_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Menu_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Menu_Find" xml:space="preserve"><value>Find</value></data>
+  <data name="Menu_Replace" xml:space="preserve"><value>Replace</value></data>
+  <data name="Menu_FormatDocument" xml:space="preserve"><value>Format Document</value></data>
+  <data name="Menu_CommentSelection" xml:space="preserve"><value>Comment Selection</value></data>
+  <data name="Menu_UncommentSelection" xml:space="preserve"><value>Uncomment Selection</value></data>
+  <data name="Menu_RenameSymbol" xml:space="preserve"><value>Rename Symbol</value></data>
+  <data name="Menu_Terminate" xml:space="preserve"><value>Terminate</value></data>
+  <data name="Menu_ToggleLiveMode" xml:space="preserve"><value>Toggle Live Mode</value></data>
+
+  <!-- Panes and tabs -->
+  <data name="Pane_Documents" xml:space="preserve"><value>Documents</value></data>
+  <data name="Pane_Results" xml:space="preserve"><value>Results</value></data>
+  <data name="Pane_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Pane_IL" xml:space="preserve"><value>IL</value></data>
+  <data name="Tab_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Tab_Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Tab_Secrets" xml:space="preserve"><value>Secrets</value></data>
+
+  <!-- Status bar -->
+  <data name="Status_CaretPositionFormat" xml:space="preserve"><value>Ln {0}, Col {1}</value></data>
+  <data name="Status_Restoring" xml:space="preserve"><value>Restoring...</value></data>
+  <data name="Status_ShowErrorDetails" xml:space="preserve"><value>Show error details</value></data>
+  <data name="Tooltip_Optimization" xml:space="preserve"><value>Optimization (Ctrl+Shift+O)</value></data>
+  <data name="Tooltip_OptimizationMac" xml:space="preserve"><value>Optimization (⌘ ⇧ O)</value></data>
+  <data name="Tooltip_EditorFontSize" xml:space="preserve"><value>Editor Font Size</value></data>
+
+  <!-- Document tree -->
+  <data name="Tooltip_NewFileApp" xml:space="preserve"><value>New File-Based App (Ctrl+N)</value></data>
+  <data name="Tooltip_NewFileAppMac" xml:space="preserve"><value>New File-Based App (⌘ N)</value></data>
+  <data name="Tooltip_NewScript" xml:space="preserve"><value>New Script (Ctrl+Shift+N)</value></data>
+  <data name="Tooltip_NewScriptMac" xml:space="preserve"><value>New Script (⌘ ⇧ N)</value></data>
+  <data name="Tooltip_OpenFile" xml:space="preserve"><value>Open File (Ctrl+O)</value></data>
+  <data name="Tooltip_OpenFileMac" xml:space="preserve"><value>Open File (⌘ O)</value></data>
+  <data name="Tooltip_ChangeDocumentsLocation" xml:space="preserve"><value>Change Documents Location</value></data>
+  <data name="Tooltip_ClearRestoreCache" xml:space="preserve"><value>Clear Restore Cache</value></data>
+  <data name="Tooltip_Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Tooltip_Secrets" xml:space="preserve"><value>Secrets</value></data>
+  <data name="Tree_SearchPlaceholder" xml:space="preserve"><value>Search documents</value></data>
+  <data name="Tooltip_ClearSearch" xml:space="preserve"><value>Clear search (Esc)</value></data>
+  <data name="Tooltip_SearchFileContents" xml:space="preserve"><value>Search File Contents</value></data>
+  <data name="Tooltip_UseRegex" xml:space="preserve"><value>Use Regular Expressions</value></data>
+  <data name="Tree_OpenInExplorer" xml:space="preserve"><value>_Open in File Explorer</value></data>
+  <data name="Tree_OpenInFinder" xml:space="preserve"><value>_Open in Finder</value></data>
+  <data name="Tree_Rename" xml:space="preserve"><value>_Rename...</value></data>
+  <data name="Tree_SaveAs" xml:space="preserve"><value>_Save As...</value></data>
+
+  <!-- Document toolbar -->
+  <data name="Tooltip_Run" xml:space="preserve"><value>Run (F5)</value></data>
+  <data name="Tooltip_ToggleLiveMode" xml:space="preserve"><value>Toggle Live Mode (Alt+F5)</value></data>
+  <data name="Automation_LiveMode" xml:space="preserve"><value>Live Mode</value></data>
+  <data name="Tooltip_Terminate" xml:space="preserve"><value>Terminate process (Shift+F5)</value></data>
+  <data name="Tooltip_TerminateMac" xml:space="preserve"><value>Terminate process (⇧ F5)</value></data>
+  <data name="Tooltip_TargetPlatform" xml:space="preserve"><value>Target platform</value></data>
+  <data name="Tooltip_SetDefaultPlatform" xml:space="preserve"><value>Set platform as default</value></data>
+  <data name="Tooltip_Save" xml:space="preserve"><value>Save (Ctrl+S)</value></data>
+  <data name="Tooltip_SaveMac" xml:space="preserve"><value>Save (⌘ S)</value></data>
+  <data name="Tooltip_NewDocument" xml:space="preserve"><value>New Document</value></data>
+  <data name="Automation_NewDocument" xml:space="preserve"><value>New Document</value></data>
+  <data name="Tooltip_OpenBuildFolder" xml:space="preserve"><value>Open Build Folder</value></data>
+  <data name="Tooltip_InlineDiagnostics" xml:space="preserve"><value>Inline Diagnostics</value></data>
+  <data name="Tooltip_NuGetPackages" xml:space="preserve"><value>NuGet Packages</value></data>
+  <data name="Placeholder_SearchNuGet" xml:space="preserve"><value>Search NuGet (Ctrl+T)</value></data>
+  <data name="Placeholder_SearchNuGetMac" xml:space="preserve"><value>Search NuGet (⌘ T)</value></data>
+  <data name="Doc_Prerelease" xml:space="preserve"><value>Prerelease</value></data>
+  <data name="Tooltip_IncludePrerelease" xml:space="preserve"><value>Include prerelease packages</value></data>
+  <data name="Tooltip_FormatDocument" xml:space="preserve"><value>Format Document (Ctrl+D)</value></data>
+  <data name="Tooltip_FormatDocumentMac" xml:space="preserve"><value>Format Document (⌘ D)</value></data>
+  <data name="Tooltip_CommentSelection" xml:space="preserve"><value>Comment Selection (Ctrl+K)</value></data>
+  <data name="Tooltip_CommentSelectionMac" xml:space="preserve"><value>Comment Selection (⌘ K)</value></data>
+  <data name="Tooltip_UncommentSelection" xml:space="preserve"><value>Uncomment Selection (Ctrl+U)</value></data>
+  <data name="Tooltip_UncommentSelectionMac" xml:space="preserve"><value>Uncomment Selection (⌘ U)</value></data>
+  <data name="Tooltip_RenameSymbol" xml:space="preserve"><value>Rename Symbol (F2)</value></data>
+
+  <!-- Main window -->
+  <data name="Main_ErrorDetailsTitle" xml:space="preserve"><value>Error Details</value></data>
+
+  <!-- Results pane -->
+  <data name="Results_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Results_Value" xml:space="preserve"><value>Value</value></data>
+  <data name="Results_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Results_CopyValue" xml:space="preserve"><value>Copy Value</value></data>
+  <data name="Results_CopyValueWithChildren" xml:space="preserve"><value>Copy Value with Children</value></data>
+  <data name="Results_CopyAllValues" xml:space="preserve"><value>Copy All Values</value></data>
+  <data name="Results_CopyAllValuesWithChildren" xml:space="preserve"><value>Copy All Values with Children</value></data>
+  <data name="Results_RestoreError" xml:space="preserve"><value>Restore Error</value></data>
+  <data name="Results_Empty" xml:space="preserve"><value>Run your code to see results here</value></data>
+
+  <!-- Build output pane -->
+  <data name="Output_Restore" xml:space="preserve"><value>Restore</value></data>
+  <data name="Output_Compile" xml:space="preserve"><value>Compile</value></data>
+  <data name="Output_CachedFormat" xml:space="preserve"><value>{0} (cached)</value></data>
+  <data name="Output_Empty" xml:space="preserve"><value>Build output will appear here</value></data>
+  <data name="Tooltip_BuildOutputSource" xml:space="preserve"><value>Build output source</value></data>
+  <data name="Message_RestoreUpToDateCached" xml:space="preserve"><value>Restore up to date (cached).</value></data>
+
+  <!-- Settings -->
+  <data name="Settings_FilterPlaceholder" xml:space="preserve"><value>Filter settings...</value></data>
+  <data name="Settings_NoMatches" xml:space="preserve"><value>No settings match your filter.</value></data>
+  <data name="Setting_EditorFontSize_Name" xml:space="preserve"><value>Editor Font Size</value></data>
+  <data name="Setting_EditorFontSize_Description" xml:space="preserve"><value>Font size for the code editor (8-72).</value></data>
+  <data name="Setting_EditorFontFamily_Name" xml:space="preserve"><value>Editor Font Family</value></data>
+  <data name="Setting_EditorFontFamily_Description" xml:space="preserve"><value>Font family for the code editor. Separate multiple fonts with commas for fallback.</value></data>
+  <data name="Setting_OutputFontSize_Name" xml:space="preserve"><value>Output Font Size</value></data>
+  <data name="Setting_OutputFontSize_Description" xml:space="preserve"><value>Font size for the results output panel.</value></data>
+  <data name="Setting_DocumentPath_Name" xml:space="preserve"><value>Documents Path</value></data>
+  <data name="Setting_DocumentPath_Description" xml:space="preserve"><value>Custom path for storing documents. Leave empty to use the default RoslynPad folder.</value></data>
+  <data name="Setting_SearchFileContents_Name" xml:space="preserve"><value>Search File Contents</value></data>
+  <data name="Setting_SearchFileContents_Description" xml:space="preserve"><value>Search within file contents when searching documents.</value></data>
+  <data name="Setting_SearchUsingRegex_Name" xml:space="preserve"><value>Search Using Regular Expressions</value></data>
+  <data name="Setting_SearchUsingRegex_Description" xml:space="preserve"><value>Use regular expressions when searching documents.</value></data>
+  <data name="Setting_OptimizeCompilation_Name" xml:space="preserve"><value>Optimize Compilation</value></data>
+  <data name="Setting_OptimizeCompilation_Description" xml:space="preserve"><value>Enable Release mode compilation for better performance.</value></data>
+  <data name="Setting_LiveModeDelayMs_Name" xml:space="preserve"><value>Live Mode Delay (ms)</value></data>
+  <data name="Setting_LiveModeDelayMs_Description" xml:space="preserve"><value>Delay in milliseconds before running code in Live Mode.</value></data>
+  <data name="Setting_SearchWhileTyping_Name" xml:space="preserve"><value>Search While Typing</value></data>
+  <data name="Setting_SearchWhileTyping_Description" xml:space="preserve"><value>Search documents as you type without pressing Enter.</value></data>
+  <data name="Setting_SdkLocation_Name" xml:space="preserve"><value>SDK Location</value></data>
+  <data name="Setting_SdkLocation_Description" xml:space="preserve"><value>Custom path to the .NET SDK root directory (e.g., '/usr/lib64/dotnet'). Leave empty for auto-detection.</value></data>
+  <data name="Setting_DefaultPlatformName_Name" xml:space="preserve"><value>Default SDK Version</value></data>
+  <data name="Setting_DefaultPlatformName_Description" xml:space="preserve"><value>Default .NET SDK version (e.g., '10.0.300').</value></data>
+  <data name="Setting_WindowFontSize_Name" xml:space="preserve"><value>Window Font Size</value></data>
+  <data name="Setting_WindowFontSize_Description" xml:space="preserve"><value>Font size for the application window (optional).</value></data>
+  <data name="Setting_FormatDocumentOnComment_Name" xml:space="preserve"><value>Format on Uncomment</value></data>
+  <data name="Setting_FormatDocumentOnComment_Description" xml:space="preserve"><value>Automatically format the document after uncommenting code.</value></data>
+  <data name="Setting_MigrateReferenceDirectives_Name" xml:space="preserve"><value>Migrate #r Directives</value></data>
+  <data name="Setting_MigrateReferenceDirectives_Description" xml:space="preserve"><value>When opening a C# file, rewrite legacy #r directives as file-based app directives (#:package, #:sdk).</value></data>
+  <data name="Setting_CustomThemePath_Name" xml:space="preserve"><value>Custom Theme Path</value></data>
+  <data name="Setting_CustomThemePath_Description" xml:space="preserve"><value>Path to a custom VS Code theme file (.json).</value></data>
+  <data name="Setting_CustomThemeType_Name" xml:space="preserve"><value>Custom Theme Type</value></data>
+  <data name="Setting_CustomThemeType_Description" xml:space="preserve"><value>Theme type when using a custom theme (Light or Dark).</value></data>
+  <data name="Setting_BuiltInTheme_Name" xml:space="preserve"><value>Built-in Theme</value></data>
+  <data name="Setting_BuiltInTheme_Description" xml:space="preserve"><value>Built-in theme to use (System, Light, or Dark).</value></data>
+  <data name="Setting_DefaultUsings_Name" xml:space="preserve"><value>Default Usings</value></data>
+  <data name="Setting_DefaultUsings_Description" xml:space="preserve"><value>Default using directives for new documents. One per line.</value></data>
+  <data name="Setting_Language_Name" xml:space="preserve"><value>Language</value></data>
+  <data name="Setting_Language_Description" xml:space="preserve"><value>User interface language. System follows the operating system language.</value></data>
+
+  <!-- Enum options -->
+  <data name="Enum_AppLanguage_System" xml:space="preserve"><value>System</value></data>
+  <data name="Enum_AppLanguage_English" xml:space="preserve"><value>English</value></data>
+  <data name="Enum_AppLanguage_ChineseSimplified" xml:space="preserve"><value>Chinese (Simplified)</value></data>
+  <data name="Enum_BuiltInTheme_System" xml:space="preserve"><value>System</value></data>
+  <data name="Enum_BuiltInTheme_Light" xml:space="preserve"><value>Light</value></data>
+  <data name="Enum_BuiltInTheme_Dark" xml:space="preserve"><value>Dark</value></data>
+  <data name="Enum_ThemeType_Light" xml:space="preserve"><value>Light</value></data>
+  <data name="Enum_ThemeType_Dark" xml:space="preserve"><value>Dark</value></data>
+  <data name="Enum_ThemeType_NotSet" xml:space="preserve"><value>Not set</value></data>
+
+  <!-- Validation -->
+  <data name="Validation_EditorFontFamily_Required" xml:space="preserve"><value>Enter at least one font family.</value></data>
+  <data name="Validation_DocumentPath_Invalid" xml:space="preserve"><value>Enter an existing directory, or leave this empty.</value></data>
+  <data name="Validation_SdkLocation_Invalid" xml:space="preserve"><value>Enter an existing .NET SDK root directory, or leave this empty.</value></data>
+  <data name="Validation_CustomThemePath_Invalid" xml:space="preserve"><value>Enter an existing VS Code theme file, or leave this empty.</value></data>
+  <data name="Validation_DefaultPlatformName_Invalid" xml:space="preserve"><value>Enter a .NET SDK version such as 10.0.300, or leave this empty.</value></data>
+  <data name="Validation_FontSize_Invalid" xml:space="preserve"><value>Enter a font size from 8 to 72.</value></data>
+  <data name="Validation_WindowFontSize_Invalid" xml:space="preserve"><value>Enter a positive font size, or leave this empty.</value></data>
+  <data name="Validation_LiveModeDelay_Invalid" xml:space="preserve"><value>Enter a non-negative delay.</value></data>
+
+  <!-- Errors, severities and file dialogs -->
+  <data name="Error_CustomThemeFileNotFound" xml:space="preserve"><value>The configured custom theme file was not found.</value></data>
+  <data name="Error_DocumentsFolderNotFound" xml:space="preserve"><value>Unable to locate the user documents folder; using the root directory.</value></data>
+  <data name="Error_MissingSdk" xml:space="preserve"><value>The .NET SDK is required to use RoslynPad. https://aka.ms/dotnet/download</value></data>
+  <data name="Error_InvalidRegex" xml:space="preserve"><value>Invalid regular expression</value></data>
+  <data name="Severity_Error" xml:space="preserve"><value>Error</value></data>
+  <data name="Severity_Warning" xml:space="preserve"><value>Warning</value></data>
+  <data name="Severity_Info" xml:space="preserve"><value>Info</value></data>
+  <data name="Severity_Hidden" xml:space="preserve"><value>Hidden</value></data>
+  <data name="FileDialog_CSharpFiles" xml:space="preserve"><value>C# Files</value></data>
+
+  <!-- Dialogs -->
+  <data name="Dialog_RenameTitle" xml:space="preserve"><value>Rename Document</value></data>
+  <data name="Dialog_RenameButton" xml:space="preserve"><value>_Rename</value></data>
+  <data name="Dialog_SaveTitle" xml:space="preserve"><value>Save Document</value></data>
+  <data name="Dialog_SaveAsTitle" xml:space="preserve"><value>Save As</value></data>
+  <data name="Dialog_SaveButton" xml:space="preserve"><value>_Save</value></data>
+  <data name="Dialog_DontSaveButton" xml:space="preserve"><value>_Don't Save</value></data>
+  <data name="Dialog_OverwriteButton" xml:space="preserve"><value>_Overwrite</value></data>
+  <data name="Dialog_CancelButton" xml:space="preserve"><value>_Cancel</value></data>
+  <data name="Dialog_DocumentName" xml:space="preserve"><value>Name</value></data>
+  <data name="NewDocument_Subtitle" xml:space="preserve"><value>A cross-platform C# editor and playground</value></data>
+
+  <!-- Migration notice and console input -->
+  <data name="Migration_Title" xml:space="preserve"><value>References updated</value></data>
+  <data name="Migration_Message" xml:space="preserve"><value>This file used #r directives, which aren't valid C# outside scripts. They were rewritten as file-based app directives. Save the file to keep the change.</value></data>
+  <data name="Migration_CheckBox" xml:space="preserve"><value>Migrate #r directives when opening a file</value></data>
+  <data name="Console_Title" xml:space="preserve"><value>Console Input</value></data>
+
+  <!-- Secrets -->
+  <data name="Secrets_UsageBefore" xml:space="preserve"><value>To use secrets in your code, add the </value></data>
+  <data name="Secrets_UsageAfterPackage" xml:space="preserve"><value> package and call </value></data>
+  <data name="Secrets_UsageEnd" xml:space="preserve"><value>.</value></data>
+  <data name="Secrets_DirectoryLabel" xml:space="preserve"><value>Secrets Directory</value></data>
+  <data name="Secrets_AddButton" xml:space="preserve"><value>Add Secret</value></data>
+  <data name="Secrets_NameLabel" xml:space="preserve"><value>Name</value></data>
+  <data name="Secrets_ValueLabel" xml:space="preserve"><value>Value</value></data>
+  <data name="Secrets_SaveButton" xml:space="preserve"><value>Save</value></data>
+  <data name="Secrets_CancelButton" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Secrets_RemoveConfirmFormat" xml:space="preserve"><value>Are you sure you want to remove the secret '{0}'?</value></data>
+  <data name="Secrets_RemoveButton" xml:space="preserve"><value>Remove</value></data>
+  <data name="Secrets_DontRemoveButton" xml:space="preserve"><value>Don't Remove</value></data>
+  <data name="Secrets_Empty" xml:space="preserve"><value>No secrets yet. Add one to use it from your scripts.</value></data>
+  <data name="Tooltip_RevealSecret" xml:space="preserve"><value>Show or hide the secret value</value></data>
+  <data name="Tooltip_CopySecret" xml:space="preserve"><value>Copy secret value</value></data>
+  <data name="Tooltip_SaveSecret" xml:space="preserve"><value>Save secret value</value></data>
+  <data name="Tooltip_DeleteSecret" xml:space="preserve"><value>Delete secret</value></data>
+
+  <!-- IL pane -->
+  <data name="IL_Placeholder" xml:space="preserve"><value>// Run to view IL</value></data>
+</root>

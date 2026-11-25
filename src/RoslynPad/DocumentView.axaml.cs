@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using RoslynPad.Build;
+using RoslynPad.Localization;
 using RoslynPad.Roslyn.FileBasedPrograms;
 using RoslynPad.UI;
 using RoslynPad.Utilities;
@@ -138,12 +139,11 @@ internal partial class DocumentView : UserControl, IDisposable
                 new TextBlock
                 {
                     TextWrapping = TextWrapping.Wrap,
-                    Text = "This file used #r directives, which aren't valid C# outside scripts. " +
-                        "They were rewritten as file-based app directives. Save the file to keep the change.",
+                    Text = LocalizationManager.Get("Migration_Message"),
                 },
                 new CheckBox
                 {
-                    Content = "Migrate #r directives when opening a file",
+                    Content = LocalizationManager.Get("Migration_CheckBox"),
                     [!ToggleButton.IsCheckedProperty] = CompiledBinding.Create(
                         (IApplicationSettingsValues s) => s.MigrateReferenceDirectives, settings),
                 },
@@ -151,7 +151,7 @@ internal partial class DocumentView : UserControl, IDisposable
         };
 
         await DialogHost.Show(
-            new HeaderedContentControl { Header = "References updated", Content = content },
+            new HeaderedContentControl { Header = LocalizationManager.Get("Migration_Title"), Content = content },
             MainWindow.DialogHostIdentifier).ConfigureAwait(true);
     }
 
@@ -231,7 +231,7 @@ internal partial class DocumentView : UserControl, IDisposable
 
         var dialog = new HeaderedContentControl
         {
-            Header = "Console Input",
+            Header = LocalizationManager.Get("Console_Title"),
             Content = textBox,
         };
 

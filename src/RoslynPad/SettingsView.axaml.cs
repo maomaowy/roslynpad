@@ -30,10 +30,10 @@ public class SettingEditorTemplate : IDataTemplate
     private static Control CreateEditor(SettingItem setting) => setting switch
     {
         { IsBoolean: true } => Bind(new CheckBox { VerticalAlignment = VerticalAlignment.Center }, ToggleButton.IsCheckedProperty, CompiledBinding.Create<SettingItem, bool>(x => x.BoolValue)),
-        { IsEnum: true } => Bind(new ComboBox { ItemsSource = setting.EnumValues, VerticalAlignment = VerticalAlignment.Center, MinWidth = 150 }, ComboBox.SelectedItemProperty, CompiledBinding.Create<SettingItem, object?>(x => x.Value)),
-        { IsNumeric: true } => Bind(new TextBox { VerticalAlignment = VerticalAlignment.Center, MinWidth = 100 }, TextBox.TextProperty, CompiledBinding.Create<SettingItem, double>(x => x.NumericValue), UpdateSourceTrigger.PropertyChanged),
-        { IsStringArray: true } => Bind(new TextBox { AcceptsReturn = true, TextWrapping = TextWrapping.Wrap, MinWidth = 200, MinHeight = 60 }, TextBox.TextProperty, CompiledBinding.Create<SettingItem, string?>(x => x.StringArrayValue), UpdateSourceTrigger.LostFocus),
-        { IsString: true } => Bind(new TextBox { VerticalAlignment = VerticalAlignment.Center, MinWidth = 200 }, TextBox.TextProperty, CompiledBinding.Create<SettingItem, string?>(x => x.StringValue), UpdateSourceTrigger.PropertyChanged),
+        { IsEnum: true } => Bind(new ComboBox { Classes = { "field" }, ItemsSource = setting.EnumOptions, VerticalAlignment = VerticalAlignment.Center, MinWidth = 180, MaxDropDownHeight = 320 }, ComboBox.SelectedItemProperty, CompiledBinding.Create<SettingItem, object?>(x => x.SelectedEnumValue)),
+        { IsNumeric: true } => Bind(new TextBox { Classes = { "field" }, VerticalAlignment = VerticalAlignment.Center, MinWidth = 120, Width = 120 }, TextBox.TextProperty, CompiledBinding.Create<SettingItem, double>(x => x.NumericValue), UpdateSourceTrigger.PropertyChanged),
+        { IsStringArray: true } => Bind(new TextBox { Classes = { "field" }, AcceptsReturn = true, TextWrapping = TextWrapping.Wrap, MinWidth = 280, Width = 280, Height = 96, VerticalContentAlignment = VerticalAlignment.Top }, TextBox.TextProperty, CompiledBinding.Create<SettingItem, string?>(x => x.StringArrayValue), UpdateSourceTrigger.LostFocus),
+        { IsString: true } => Bind(new TextBox { Classes = { "field" }, VerticalAlignment = VerticalAlignment.Center, MinWidth = 280, Width = 280 }, TextBox.TextProperty, CompiledBinding.Create<SettingItem, string?>(x => x.StringValue), UpdateSourceTrigger.PropertyChanged),
         _ => new TextBlock()
     };
 

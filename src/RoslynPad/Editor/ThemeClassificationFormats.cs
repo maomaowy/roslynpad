@@ -165,9 +165,13 @@ public sealed partial class ThemeClassificationFormats
     {
         var properties = new Avalonia.Controls.ResourceDictionary();
         Set(MinimapFormatNames.Background, "minimap.background");
-        Set(MinimapFormatNames.Viewport, "minimapSlider.background");
-        Set(MinimapFormatNames.ViewportHover, "minimapSlider.hoverBackground");
-        Set(MinimapFormatNames.ViewportActive, "minimapSlider.activeBackground");
+
+        // The viewport slider is a translucent overlay in VS Code, but on a short or empty
+        // document it covers the whole minimap. Damp the theme alpha so it reads as a slider
+        // instead of a solid block while keeping the theme's hue.
+        SetOpacity(MinimapFormatNames.Viewport, "minimapSlider.background", 0.35);
+        SetOpacity(MinimapFormatNames.ViewportHover, "minimapSlider.hoverBackground", 0.45);
+        SetOpacity(MinimapFormatNames.ViewportActive, "minimapSlider.activeBackground", 0.55);
         Set(MinimapFormatNames.FindMatch, "minimap.findMatchHighlight");
         Set(MinimapFormatNames.Selection, "minimap.selectionHighlight");
         Set(MinimapFormatNames.Added, "minimapGutter.addedBackground");
@@ -179,6 +183,15 @@ public sealed partial class ThemeClassificationFormats
             if (_theme.TryGetColor(colorId) is { } color)
             {
                 properties[property] = new SolidColorBrush(ThemeDictionaryBase.ParseThemeColor(color));
+            }
+        }
+
+        void SetOpacity(string property, string colorId, double opacityScale)
+        {
+            if (_theme.TryGetColor(colorId) is { } colorString)
+            {
+                var color = ThemeDictionaryBase.ParseThemeColor(colorString);
+                properties[property] = new SolidColorBrush(color, color.A / 255.0 * opacityScale);
             }
         }
     }

@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using NuGet.Versioning;
+using RoslynPad.Localization;
 using RoslynPad.Themes;
 
 // Reflection-based System.Text.Json on the settings DTOs: this assembly is a trim root
@@ -87,7 +88,7 @@ internal class ApplicationSettings : IApplicationSettings
         if (string.IsNullOrEmpty(documentsPath))
         {
             documentsPath = "/";
-            _errorReporter?.ReportError(new InvalidOperationException("Unable to locate the user documents folder; Using root"));
+            _errorReporter?.ReportError(new InvalidOperationException(LocalizationManager.Get("Error_DocumentsFolderNotFound")));
         }
 
         return Path.Combine(documentsPath, "RoslynPad");
@@ -370,6 +371,12 @@ internal class ApplicationSettings : IApplicationSettings
         }
 
         public BuiltInTheme BuiltInTheme
+        {
+            get;
+            set => SetProperty(ref field, value);
+        }
+
+        public AppLanguage Language
         {
             get;
             set => SetProperty(ref field, value);
